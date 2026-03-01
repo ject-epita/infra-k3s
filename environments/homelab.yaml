@@ -3,8 +3,8 @@ domain: "{{ requiredEnv \"DOMAIN\" }}"
 
 nfs:
   server: "{{ requiredEnv \"NFS_SERVER\" }}"
-  mediaPath: "{{ requiredEnv \"NFS_MEDIA_PATH\" | default \"/volume1/media\" }}"
-  cachePath: "{{ requiredEnv \"NFS_CACHE_PATH\" | default \"/volume1/cache\" }}"
+  mediaPath: "{{ requiredEnv \"NFS_MEDIA_PATH\" }}"
+  cachePath: "{{ requiredEnv \"NFS_CACHE_PATH\" }}"
 
 minio:
   host: "{{ requiredEnv \"MINIO_HOST\" }}"

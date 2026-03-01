@@ -13,11 +13,8 @@ controllers:
             cpu: 500m
             memory: 256Mi
         env:
-          ACME_EMAIL:
-            valueFrom:
-              secretKeyRef:
-                name: caddy-secrets
-                key: acme-email
+          ACME_EMAIL: "{{ requiredEnv \"ACME_EMAIL\" }}"
+          DOMAIN: "{{ requiredEnv \"DOMAIN\" }}"
 
 service:
   app:

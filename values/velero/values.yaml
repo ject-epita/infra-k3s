@@ -11,6 +11,7 @@ configuration:
   backupStorageLocation:
     - name: default
       provider: aws
+      # Bucket must be created in MinIO before deploying Velero
       bucket: velero-backups
       config:
         region: minio

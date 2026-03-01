@@ -1,91 +1,93 @@
-# PVCs for media services using nfs-media StorageClass
+# PVCs for media/photos services using nfs-media StorageClass
 # These PVCs are excluded from Velero backups (large media files)
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-media-pvc
-  namespace: media
-  annotations:
-    velero.io/exclude-from-backup: "true"
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-media
-  resources:
-    requests:
-      storage: 500Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: immich-library-pvc
-  namespace: photos
-  annotations:
-    velero.io/exclude-from-backup: "true"
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-media
-  resources:
-    requests:
-      storage: 500Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: immich-ml-cache-pvc
-  namespace: photos
-  annotations:
-    velero.io/exclude-from-backup: "true"
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: nfs-media
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: qbittorrent-downloads-pvc
-  namespace: media
-  annotations:
-    velero.io/exclude-from-backup: "true"
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-media
-  resources:
-    requests:
-      storage: 200Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: media-movies-pvc
-  namespace: media
-  annotations:
-    velero.io/exclude-from-backup: "true"
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-media
-  resources:
-    requests:
-      storage: 300Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: media-tv-pvc
-  namespace: media
-  annotations:
-    velero.io/exclude-from-backup: "true"
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: nfs-media
-  resources:
-    requests:
-      storage: 300Gi
+# Format: bjw-s/raw chart resources list
+resources:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: jellyfin-media-pvc
+      namespace: media
+      annotations:
+        velero.io/exclude-from-backup: "true"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      storageClassName: nfs-media
+      resources:
+        requests:
+          storage: 500Gi
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: immich-library-pvc
+      namespace: photos
+      annotations:
+        velero.io/exclude-from-backup: "true"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      storageClassName: nfs-media
+      resources:
+        requests:
+          storage: 500Gi
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: immich-ml-cache-pvc
+      namespace: photos
+      annotations:
+        velero.io/exclude-from-backup: "true"
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      storageClassName: nfs-media
+      resources:
+        requests:
+          storage: 10Gi
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: qbittorrent-downloads-pvc
+      namespace: media
+      annotations:
+        velero.io/exclude-from-backup: "true"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      storageClassName: nfs-media
+      resources:
+        requests:
+          storage: 200Gi
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: media-movies-pvc
+      namespace: media
+      annotations:
+        velero.io/exclude-from-backup: "true"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      storageClassName: nfs-media
+      resources:
+        requests:
+          storage: 300Gi
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: media-tv-pvc
+      namespace: media
+      annotations:
+        velero.io/exclude-from-backup: "true"
+    spec:
+      accessModes:
+        - ReadWriteMany
+      storageClassName: nfs-media
+      resources:
+        requests:
+          storage: 300Gi

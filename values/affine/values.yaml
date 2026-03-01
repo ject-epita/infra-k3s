@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/toeverything/affine-graphql
-          tag: "stable"
+          tag: "0.19.0"
         env:
           DATABASE_URL: "postgresql://affine:{{ requiredEnv \"AFFINE_DB_PASSWORD\" }}@{{ requiredEnv \"AFFINE_DB_HOST\" }}/affine"
           NODE_ENV: production
