@@ -1,6 +1,6 @@
 global:
   image:
-    tag: "2024.10.4"
+    tag: "2026.2.0"
   env:
     AUTHENTIK_SECRET_KEY: "{{ requiredEnv \"AUTHENTIK_SECRET_KEY\" }}"
     AUTHENTIK_POSTGRESQL__HOST: "{{ requiredEnv \"AUTHENTIK_DB_HOST\" }}"
@@ -10,15 +10,7 @@ global:
 
 server:
   ingress:
-    enabled: true
-    ingressClassName: caddy
-    annotations: {}
-    hosts:
-      - host: "auth.{{ requiredEnv \"DOMAIN\" }}"
-        paths:
-          - path: /
-            pathType: Prefix
-    tls: []
+    enabled: false
   resources:
     requests:
       cpu: 200m

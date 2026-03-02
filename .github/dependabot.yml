@@ -1,44 +1,11 @@
 version: 2
 updates:
-  # Keep Helm chart versions up to date
+  # Keep Helm chart versions up to date via root helmfile.yaml
+  # Note: Dependabot only scans helmfile.yaml files, not arbitrary release YAML files.
+  # For full coverage of all release files in releases/ and Docker image tags,
+  # use Renovate Bot (https://docs.renovatebot.com/modules/manager/helmfile/).
   - package-ecosystem: "helm"
-    directory: "/releases/infra"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "chore(helm)"
-    labels:
-      - "dependencies"
-
-  - package-ecosystem: "helm"
-    directory: "/releases/auth"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "chore(helm)"
-    labels:
-      - "dependencies"
-
-  - package-ecosystem: "helm"
-    directory: "/releases/media"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "chore(helm)"
-    labels:
-      - "dependencies"
-
-  - package-ecosystem: "helm"
-    directory: "/releases/photos"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "chore(helm)"
-    labels:
-      - "dependencies"
-
-  - package-ecosystem: "helm"
-    directory: "/releases/productivity"
+    directory: "/"
     schedule:
       interval: "weekly"
     commit-message:

@@ -8,14 +8,10 @@ persistence:
     existingClaim: media-data-pvc
 
 ingress:
-  enabled: true
-  ingressClassName: caddy
+  enabled: false
+  ingressClassName: ""
   annotations: {}
-  hosts:
-    - host: "jellyfin.{{ requiredEnv \"DOMAIN\" }}"
-      paths:
-        - path: /
-          pathType: Prefix
+  hosts: []
   tls: []
 
 resources:

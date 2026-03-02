@@ -1,7 +1,7 @@
 releases:
   - name: caddy
     namespace: caddy
-    chart: caddy/caddy-ingress-controller
-    version: "1.3.0"
+    chart: bjw-s/app-template
+    version: "3.5.1"
     values:
       - ../../values/caddy/values.yaml

@@ -1,8 +1,8 @@
 releases:
   - name: snapshot-class-local-path
     namespace: kube-system
-    chart: bjw-s/raw
-    version: "2.0.0"
+    chart: incubator/raw
+    version: "0.2.5"
     values:
       - resources:
           - apiVersion: snapshot.storage.k8s.io/v1

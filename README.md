@@ -1,54 +1,39 @@
 # titiCloud
-Ce repo contient toutes les ressources nécessaires pour faire tourner titiCloud, le homelab des Thivillons.
+Ce repo contient les ressources Helmfile pour déployer titiCloud, le homelab des Thivillons.
 
-## Configuration VM Proxmox
-### 1. Préparer la VM (GUI ou CLI Proxmox)
-- OS : Linux 6.x Kernel (l'ISO NixOS Minimal convient parfaitement).
-- Système :
-  - Machine : q35
-  - BIOS : OVMF (UEFI)
-- Disque :
-  - Bus : SCSI avec contrôleur VirtIO SCSI Single
-  - Option Discard activée pour le TRIM de ton NVMe
-- CPU : Type host pour exploiter toutes les instructions du i5-1340P.
-- Réseau : Modèle VirtIO (paravirtualized).
+## Prérequis
 
-### 2. Installation « Bootstrap »
-1. Démarre sur l'ISO NixOS Minimal.
-2. Partitionne le disque (schéma GPT/UEFI — 512 Mo pour EFI (`/boot`), le reste pour la racine (`/`)) :
+- k3s installé sur le NUC
+- NAS Synology avec NFS et MinIO activés
+- Helmfile installé (`brew install helmfile` ou équivalent)
+- `.env` créé depuis `.env.example` avec toutes les variables remplies
+
+## Déploiement
+
 ```bash
-parted /dev/sda -- mklabel gpt
-parted /dev/sda -- mkpart primary fat32 1MiB 512MiB
-parted /dev/sda -- set 1 esp on
-parted /dev/sda -- mkpart primary ext4 512MiB 100%
+# Copier et remplir les variables
+cp .env.example .env
+# Editer .env avec vos valeurs
+
+# Déployer tout
+helmfile --environment homelab apply
 ```
-3. Formate et monte les partitions :
-```bash
-mkfs.fat -F 32 -n boot /dev/sda1
-mkfs.ext4 -L nixos /dev/sda2
-mount /dev/disk/by-label/nixos /mnt
-mkdir -p /mnt/boot
-mount /dev/disk/by-label/boot /mnt/boot
-```
-4. Génère la configuration de base :
-```bash
-nixos-generate-config --root /mnt
-```
-5. Active le SSH et crée ton utilisateur dans `/mnt/etc/nixos/configuration.nix`.
-   - Remarque : cette configuration sera remplacée par ta Flake juste après.
-6. Installe NixOS (`nixos-install`), puis redémarre.
 
 ## Mise à jour des dépendances
 
 ### Helm charts
 Dependabot est configuré (`.github/dependabot.yml`) pour ouvrir automatiquement des PRs
-quand de nouvelles versions de charts Helm sont disponibles dans les dossiers `releases/`.
-Aucune action manuelle n'est nécessaire.
+quand de nouvelles versions de charts Helm sont disponibles.
+
+> **Note** : Dependabot pour Helm ne peut analyser que les fichiers `helmfile.yaml` racines.
+> Les fichiers de release dans `releases/` ne sont pas scannés automatiquement.
+> Pour une couverture complète (charts + images Docker), il est recommandé d'utiliser
+> [Renovate Bot](https://docs.renovatebot.com/modules/manager/helmfile/) qui supporte
+> nativement les fichiers Helmfile et les images Docker dans les valeurs Helm.
 
 ### Tags d'images Docker
-Les tags Docker dans les fichiers `values/*/values.yaml` **ne sont pas** mis à jour
-automatiquement par Dependabot (limitation Dependabot — il ne scanne pas les fichiers
-Helm values).
+Les tags Docker dans les fichiers `values/*/values.yaml` ne sont pas mis à jour
+automatiquement par Dependabot.
 
 Pour mettre à jour les tags manuellement :
 1. Recherche le tag actuel : `grep -r "tag:" values/`
@@ -56,7 +41,6 @@ Pour mettre à jour les tags manuellement :
 3. Mets à jour le `tag:` dans le fichier `values/<service>/values.yaml` correspondant.
 4. Ouvre une PR pour review avant de déployer.
 
-> **Astuce** : Pour automatiser ce processus, tu peux activer
-> [Renovate Bot](https://docs.renovatebot.com/modules/manager/helm-values/) qui supporte
-> nativement les images Docker dans les fichiers Helm values via le manager `helm-values`.
-> Ajoute un fichier `renovate.json` à la racine du repo pour l'activer.
+> Pour automatiser ce processus, ajoute un fichier `renovate.json` à la racine du repo
+> pour activer [Renovate Bot](https://docs.renovatebot.com/modules/manager/helm-values/)
+> qui supporte nativement les images Docker dans les fichiers Helm values.

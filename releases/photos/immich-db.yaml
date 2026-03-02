@@ -2,6 +2,6 @@ releases:
   - name: immich-db
     namespace: photos
     chart: cnpg/cluster
-    version: "0.2.1"
+    version: "0.5.0"
     values:
       - ../../values/immich-db/values.yaml

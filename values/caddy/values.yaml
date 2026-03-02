@@ -1,22 +1,131 @@
-ingressController:
-  config:
-    email: "{{ requiredEnv \"ACME_EMAIL\" }}"
-    acmeCA: https://acme-v02.api.letsencrypt.org/directory
-    onDemandTLS: false
-    proxyProtocol: false
-    replicaCount: 1
-    logLevel: "INFO"
-
-# Bind directly to host ports 80/443 — no MetalLB required
-hostNetwork: true
+controllers:
+  caddy:
+    containers:
+      app:
+        image:
+          repository: caddy
+          tag: "2.11.1-alpine"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        env:
+          ACME_EMAIL: "{{ requiredEnv \"ACME_EMAIL\" }}"
+          DOMAIN: "{{ requiredEnv \"DOMAIN\" }}"
 
 service:
-  type: ClusterIP
+  app:
+    controller: caddy
+    type: ClusterIP
+    ports:
+      http:
+        port: 80
+      https:
+        port: 443
 
-resources:
-  requests:
-    cpu: 100m
-    memory: 128Mi
-  limits:
-    cpu: 500m
-    memory: 256Mi
+configMaps:
+  caddyfile:
+    data:
+      Caddyfile: |
+        {
+          email {$ACME_EMAIL}
+          admin off
+        }
+
+        # Authentik
+        auth.{$DOMAIN} {
+          reverse_proxy authentik-server.auth.svc.cluster.local:9000
+        }
+
+        # Immich
+        photos.{$DOMAIN} {
+          reverse_proxy immich-server.photos.svc.cluster.local:3001
+        }
+
+        # Affine
+        affine.{$DOMAIN} {
+          reverse_proxy affine.productivity.svc.cluster.local:3010
+        }
+
+        # N8N
+        n8n.{$DOMAIN} {
+          reverse_proxy n8n.productivity.svc.cluster.local:5678
+        }
+
+        # Vaultwarden
+        vault.{$DOMAIN} {
+          reverse_proxy vaultwarden.productivity.svc.cluster.local:80
+        }
+
+        # Jellyfin
+        jellyfin.{$DOMAIN} {
+          reverse_proxy jellyfin.media.svc.cluster.local:8096
+        }
+
+        # Seerr
+        seerr.{$DOMAIN} {
+          reverse_proxy seerr.media.svc.cluster.local:5055
+        }
+
+        # qBittorrent — protected by Authentik forward auth
+        qbittorrent.{$DOMAIN} {
+          forward_auth https://auth.{$DOMAIN} {
+            uri /outpost.goauthentik.io/auth/caddy
+            copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-jwks X-Authentik-Meta-outpost X-Authentik-Meta-provider X-Authentik-Meta-app X-Authentik-Meta-version
+          }
+          reverse_proxy qbittorrent.media.svc.cluster.local:8080
+        }
+
+        # Radarr — protected by Authentik forward auth
+        radarr.{$DOMAIN} {
+          forward_auth https://auth.{$DOMAIN} {
+            uri /outpost.goauthentik.io/auth/caddy
+            copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-jwks X-Authentik-Meta-outpost X-Authentik-Meta-provider X-Authentik-Meta-app X-Authentik-Meta-version
+          }
+          reverse_proxy radarr.media.svc.cluster.local:7878
+        }
+
+        # Sonarr — protected by Authentik forward auth
+        sonarr.{$DOMAIN} {
+          forward_auth https://auth.{$DOMAIN} {
+            uri /outpost.goauthentik.io/auth/caddy
+            copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-jwks X-Authentik-Meta-outpost X-Authentik-Meta-provider X-Authentik-Meta-app X-Authentik-Meta-version
+          }
+          reverse_proxy sonarr.media.svc.cluster.local:8989
+        }
+
+        # Prowlarr — protected by Authentik forward auth
+        prowlarr.{$DOMAIN} {
+          forward_auth https://auth.{$DOMAIN} {
+            uri /outpost.goauthentik.io/auth/caddy
+            copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-jwks X-Authentik-Meta-outpost X-Authentik-Meta-provider X-Authentik-Meta-app X-Authentik-Meta-version
+          }
+          reverse_proxy prowlarr.media.svc.cluster.local:9696
+        }
+        # Flaresolverr is internal-only — no public subdomain exposed
+
+persistence:
+  caddyfile:
+    type: configMap
+    name: caddy-caddyfile
+    globalMounts:
+      - path: /etc/caddy/Caddyfile
+        subPath: Caddyfile
+  caddy-data:
+    type: persistentVolumeClaim
+    storageClass: local-config
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    globalMounts:
+      - path: /data
+  caddy-config:
+    type: emptyDir
+    globalMounts:
+      - path: /config
+
+defaultPodOptions:
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet

@@ -24,11 +24,11 @@ repositories:
   - name: immich
     url: https://immich-app.github.io/immich-charts
   - name: bjw-s
-    url: https://bjw-s.github.io/helm-charts
+    url: https://bjw-s-labs.github.io/helm-charts
   - name: jellyfin
     url: https://jellyfin.github.io/jellyfin-helm
-  - name: caddy
-    url: https://caddyserver.github.io/ingress/
+  - name: incubator
+    url: https://charts.helm.sh/incubator
 
 helmfiles:
   # 1. Infrastructure operators (order matters)

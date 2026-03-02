@@ -17,15 +17,7 @@ env:
 
 ingress:
   main:
-    enabled: true
-    className: caddy
-    annotations: {}
-    hosts:
-      - host: "photos.{{ requiredEnv \"DOMAIN\" }}"
-        paths:
-          - path: /
-            pathType: Prefix
-    tls: []
+    enabled: false
 
 server:
   resources:

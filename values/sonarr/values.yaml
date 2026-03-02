@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: ghcr.io/linuxserver/sonarr
-          tag: "4.0.9"
+          tag: "4.0.16.2944"
         env:
           PUID: "1000"
           PGID: "1000"
@@ -41,21 +41,4 @@ persistence:
 
 ingress:
   app:
-    enabled: true
-    className: caddy
-    annotations:
-      # Authentik forward auth — internal auth is disabled on this service
-      caddy.ingress.kubernetes.io/server-snippet: |
-        forward_auth http://authentik-server.auth.svc.cluster.local:9000 {
-          uri /outpost.goauthentik.io/auth/caddy
-          copy_headers X-Authentik-Username X-Authentik-Groups X-Authentik-Email X-Authentik-Uid X-Authentik-Jwt X-Authentik-Meta-jwks X-Authentik-Meta-outpost X-Authentik-Meta-provider X-Authentik-Meta-app X-Authentik-Meta-version
-          @goauthentik_proxy_response status 401
-          handle @goauthentik_proxy_response {
-            redir * /outpost.goauthentik.io/start?rd={http.request.uri}
-          }
-        }
-    hosts:
-      - host: "sonarr.{{ requiredEnv \"DOMAIN\" }}"
-        paths:
-          - path: /
-            pathType: Prefix
+    enabled: false

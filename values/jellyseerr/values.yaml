@@ -1,10 +1,14 @@
+# DEPRECATED: This values file is no longer used. The release was renamed from
+# "jellyseerr" to "seerr". Use values/seerr/values.yaml instead.
+# The project itself was also renamed and moved to https://github.com/seerr-team/seerr
+
 controllers:
-  jellyseerr:
+  seerr:
     containers:
       app:
         image:
-          repository: fallenbagel/jellyseerr
-          tag: "2.1.0"
+          repository: ghcr.io/seerr-team/seerr
+          tag: "3.1.0"
         env:
           LOG_LEVEL: info
           TZ: Europe/Paris
@@ -18,7 +22,7 @@ controllers:
 
 service:
   app:
-    controller: jellyseerr
+    controller: seerr
     ports:
       http:
         port: 5055

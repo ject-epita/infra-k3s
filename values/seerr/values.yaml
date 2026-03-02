@@ -3,8 +3,8 @@ controllers:
     containers:
       app:
         image:
-          repository: fallenbagel/jellyseerr
-          tag: "2.1.0"
+          repository: ghcr.io/seerr-team/seerr
+          tag: "3.1.0"
         env:
           LOG_LEVEL: info
           TZ: Europe/Paris
@@ -34,11 +34,4 @@ persistence:
 
 ingress:
   app:
-    enabled: true
-    className: caddy
-    annotations: {}
-    hosts:
-      - host: "seerr.{{ requiredEnv \"DOMAIN\" }}"
-        paths:
-          - path: /
-            pathType: Prefix
+    enabled: false

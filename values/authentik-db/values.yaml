@@ -31,9 +31,9 @@ cluster:
           name: cnpg-minio-secret
           key: ACCESS_SECRET_KEY
       wal:
-        compression: gzip
+        compression: brotli
       data:
-        compression: gzip
+        compression: brotli
 
   scheduledBackup:
     - name: authentik-db-daily

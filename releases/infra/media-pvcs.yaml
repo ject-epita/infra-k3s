@@ -1,7 +1,7 @@
 releases:
   - name: media-pvcs
     namespace: default
-    chart: bjw-s/raw
-    version: "2.0.0"
+    chart: incubator/raw
+    version: "0.2.5"
     values:
       - ../../values/pvcs/media-pvcs.yaml

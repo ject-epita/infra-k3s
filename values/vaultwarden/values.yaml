@@ -4,7 +4,7 @@ controllers:
       app:
         image:
           repository: vaultwarden/server
-          tag: "1.32.7-alpine"
+          tag: "1.35.4-alpine"
         env:
           ADMIN_TOKEN: "{{ requiredEnv \"VAULTWARDEN_ADMIN_TOKEN\" }}"
           DOMAIN: "https://vault.{{ requiredEnv \"DOMAIN\" }}"
@@ -35,11 +35,4 @@ persistence:
 
 ingress:
   app:
-    enabled: true
-    className: caddy
-    annotations: {}
-    hosts:
-      - host: "vault.{{ requiredEnv \"DOMAIN\" }}"
-        paths:
-          - path: /
-            pathType: Prefix
+    enabled: false
