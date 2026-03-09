@@ -1,0 +1,31 @@
+# Feature toggles — set to false to disable a service without removing its config.
+# Infrastructure releases are always deployed and not toggleable.
+
+features:
+  # --- Auth ---
+  authentik:
+    app: true
+    db: true
+
+  # --- Photos ---
+  immich:
+    app: true
+    db: true
+
+  # --- Productivity ---
+  affine:
+    app: true
+    db: true
+  n8n:
+    app: true
+    db: true
+  vaultwarden: true
+
+  # --- Media ---
+  jellyfin: true
+  seerr: true
+  qbittorrent: true
+  radarr: true
+  sonarr: true
+  prowlarr: true
+  flaresolverr: true

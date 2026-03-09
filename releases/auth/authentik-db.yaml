@@ -1,5 +1,6 @@
 releases:
   - name: authentik-db
+    installed: {{ .Values.features.authentik.db }}
     namespace: auth
     chart: cnpg/cluster
     version: "0.5.0"

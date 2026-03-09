@@ -2,6 +2,7 @@ environments:
   homelab:
     values:
       - environments/homelab.yaml
+      - settings.yaml
 
 ---
 

@@ -1,5 +1,6 @@
 releases:
   - name: vaultwarden
+    installed: {{ .Values.features.vaultwarden }}
     namespace: productivity
     chart: bjw-s/app-template
     version: "3.5.1"

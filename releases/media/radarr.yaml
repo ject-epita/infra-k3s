@@ -1,5 +1,6 @@
 releases:
   - name: radarr
+    installed: {{ .Values.features.radarr }}
     namespace: media
     chart: bjw-s/app-template
     version: "3.5.1"

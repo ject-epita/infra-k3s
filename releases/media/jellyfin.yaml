@@ -1,5 +1,6 @@
 releases:
   - name: jellyfin
+    installed: {{ .Values.features.jellyfin }}
     namespace: media
     chart: jellyfin/jellyfin
     version: "2.1.0"
