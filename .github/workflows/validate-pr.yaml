@@ -22,7 +22,7 @@ jobs:
           set +a
           env >> "$GITHUB_ENV"
 
-      - uses: helmfile/helmfile-action@v2.2.0
+      - uses: helmfile/helmfile-action@v2.3.1
         with:
           helmfile-args: lint
 
