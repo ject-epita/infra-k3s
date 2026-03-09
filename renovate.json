@@ -25,13 +25,13 @@
   ],
   "helmfile": {
     "fileMatch": [
-      "(^|/)helmfile\\.ya?ml$",
-      "(^|/)releases/.+\\.ya?ml$"
+      "(^|/)helmfile\\.ya?ml(\\.gotmpl)?$",
+      "(^|/)releases/.+\\.ya?ml(\\.gotmpl)?$"
     ]
   },
   "helm-values": {
     "fileMatch": [
-      "(^|/)values/.+/values\\.ya?ml$"
+      "(^|/)values/.+/values\\.ya?ml(\\.gotmpl)?$"
     ]
   }
 }
