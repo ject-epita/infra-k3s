@@ -15,7 +15,7 @@ controllers:
           WIREGUARD_PUBLIC_KEY: {{ requiredEnv "WIREGUARD_PUBLIC_KEY" | quote }}
           FIREWALL_INPUT_PORTS: "8080"
           # k3s default pod/service CIDRs - adjust if your cluster uses different ranges
-          FIREWALL_OUTBOUND_SUBNETS: "10.42.0.0/16,10.43.0.0/16"
+          FIREWALL_OUTBOUND_SUBNETS: "10.42.0.0/16,10.43.0.0/16,fd00:42::/56,fd00:43::/108"
           DOT: "off"
           HEALTH_VPN_DURATION_INITIAL: 30s
         securityContext:
