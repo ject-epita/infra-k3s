@@ -1,17 +1,24 @@
 global:
   image:
     tag: "2026.2.0"
-  env:
-    - name: AUTHENTIK_SECRET_KEY
-      value: {{ requiredEnv "AUTHENTIK_SECRET_KEY" | quote }}
-    - name: AUTHENTIK_POSTGRESQL__HOST
-      value: {{ requiredEnv "AUTHENTIK_DB_HOST" | quote }}
-    - name: AUTHENTIK_POSTGRESQL__NAME
-      value: authentik
-    - name: AUTHENTIK_POSTGRESQL__USER
-      value: authentik
-    - name: AUTHENTIK_POSTGRESQL__PASSWORD
-      value: {{ requiredEnv "AUTHENTIK_DB_PASSWORD" | quote }}
+
+authentik:
+  secret_key: {{ requiredEnv "AUTHENTIK_SECRET_KEY" | quote }}
+  error_reporting:
+    enabled: true
+  postgresql:
+    host: {{ requiredEnv "AUTHENTIK_DB_HOST" | quote }}
+    name: "authentik"
+    user: "authentik"
+    password: {{ requiredEnv "AUTHENTIK_DB_PASSWORD" | quote }}
+  email:
+    host: {{ env "AUTHENTIK_EMAIL_HOST" | default "" | quote }}
+    port: {{ env "AUTHENTIK_EMAIL_PORT" | default "587" | quote }}
+    username: {{ env "AUTHENTIK_EMAIL_USERNAME" | default "" | quote }}
+    password: {{ env "AUTHENTIK_EMAIL_PASSWORD" | default "" | quote }}
+    from: {{ env "AUTHENTIK_EMAIL_FROM" | default "" | quote }}
+    use_tls: {{ env "AUTHENTIK_EMAIL_USE_TLS" | default "false" }}
+    use_ssl: {{ env "AUTHENTIK_EMAIL_USE_SSL" | default "false" }}
 
 server:
   ingress:

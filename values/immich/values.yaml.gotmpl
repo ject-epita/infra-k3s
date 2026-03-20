@@ -9,11 +9,8 @@ immich:
       existingClaim: immich-library-pvc
 
 env:
-  DB_HOSTNAME: {{ requiredEnv "IMMICH_DB_HOST" | quote }}
-  DB_DATABASE_NAME: immich
-  DB_USERNAME: immich
-  DB_PASSWORD: {{ requiredEnv "IMMICH_DB_PASSWORD" | quote }}
-  REDIS_HOSTNAME: immich-redis-master
+  REDIS_HOSTNAME: "{{ printf "%s-valkey" .Release.Name }}"
+  DB_URL: "postgres://immich:{{ requiredEnv "IMMICH_DB_PASSWORD" }}@{{ requiredEnv "IMMICH_DB_HOST" }}:5432/immich"
 
 ingress:
   main:
@@ -62,16 +59,19 @@ machine-learning:
       storageClass: local-config
       size: 10Gi
 
-redis:
+valkey:
   enabled: true
-  master:
-    resources:
-      requests:
-        cpu: 50m
-        memory: 64Mi
-      limits:
-        cpu: 200m
-        memory: 128Mi
+  controllers:
+    main:
+      containers:
+        main:
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
 
 postgresql:
   enabled: false

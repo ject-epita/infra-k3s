@@ -1,6 +1,7 @@
 cluster:
-  name: affine-db
+  name: affine-db-16
   instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:16
 
   storage:
     size: 5Gi
@@ -17,6 +18,8 @@ cluster:
       owner: affine
       secret:
         name: affine-db-secret
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vector CASCADE;
 
   backup:
     retentionPolicy: "30d"

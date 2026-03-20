@@ -12,6 +12,13 @@
   },
   "packageRules": [
     {
+      "matchUpdateTypes": ["major"],
+      "matchPackageNames": ["ghcr.io/cloudnative-pg/postgresql", "ghcr.io/tensorchord/cloudnative-vectorchord"],
+      "draftPR": true,
+      "prBodyNotes": ["⚠️ **MAJOR DATABASE UPGRADE** ⚠️\n\nPlease read the upgrade guide before merging this PR: [docs/database-major-version-upgrade.md](docs/database-major-version-upgrade.md)"],
+      "labels": ["major-db-upgrade"]
+    },
+    {
       "matchManagers": [
         "nix"
       ],

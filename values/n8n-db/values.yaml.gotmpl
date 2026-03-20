@@ -1,6 +1,7 @@
 cluster:
-  name: n8n-db
+  name: n8n-db-16
   instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:16
 
   storage:
     size: 5Gi
@@ -17,6 +18,9 @@ cluster:
       owner: n8n
       secret:
         name: n8n-db-secret
+      postInitApplicationSQL:
+        - GRANT ALL ON SCHEMA public TO n8n;
+        - GRANT CREATE ON SCHEMA public TO n8n;
 
   backup:
     retentionPolicy: "30d"

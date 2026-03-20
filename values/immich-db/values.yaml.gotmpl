@@ -1,12 +1,15 @@
 cluster:
-  name: immich-db
+  name: immich-db-16
   instances: 1
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.3
 
   storage:
     size: 10Gi
     storageClass: local-config
 
   postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
     parameters:
       max_connections: "100"
       shared_buffers: 256MB
@@ -17,6 +20,9 @@ cluster:
       owner: immich
       secret:
         name: immich-db-secret
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;
 
   backup:
     retentionPolicy: "30d"
