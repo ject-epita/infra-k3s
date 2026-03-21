@@ -17,7 +17,7 @@ docker exec garage /garage layout apply --version 1
 
 ## 2. Créer une clé S3
 ```bash
-docker exec garage /garage key create my-key
+docker exec garage /garage key create k3s-key
 ```
 Notez le `Access key ID` et la `Secret key` générés.
 
