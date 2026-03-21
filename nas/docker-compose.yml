@@ -12,6 +12,6 @@ services:
       # Inject the RPC secret via environment variable for security
       - GARAGE_RPC_SECRET=${GARAGE_RPC_SECRET:?GARAGE_RPC_SECRET is required}
     volumes:
-      - ./garage.toml:/etc/garage/garage.toml:ro
+      - ./garage.toml:/etc/garage.toml:ro
       - ${GARAGE_DATA_PATH:?GARAGE_DATA_PATH is required}:/var/lib/garage
-    command: [ "/garage", "-c", "/etc/garage/garage.toml", "server" ]
+    command: [ "/garage", "server" ]
