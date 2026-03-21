@@ -24,7 +24,6 @@ helmfiles:
   # 4. Productivity namespace: DBs first, then apps
   - path: releases/productivity/affine-db.yaml.gotmpl
   - path: releases/productivity/affine.yaml.gotmpl
-  - path: releases/productivity/n8n-db.yaml.gotmpl
   - path: releases/productivity/n8n.yaml.gotmpl
   - path: releases/productivity/vaultwarden.yaml.gotmpl
 
