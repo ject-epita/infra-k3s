@@ -9,7 +9,7 @@ Depuis le NAS (ou en exec dans le conteneur) :
 docker exec garage /garage status
 
 # Assigner le noeud (remplacer l'ID par celui affiché dans la commande status)
-docker exec garage /garage layout assign <NODE_ID> --zone dc1 --capacity 1
+docker exec garage /garage layout assign <NODE_ID> --zone dc1 --capacity 1T
 
 # Appliquer le layout
 docker exec garage /garage layout apply --version 1
@@ -29,8 +29,8 @@ docker exec garage /garage bucket create cnpg-backups
 
 ## 4. Autoriser la clé sur les buckets
 ```bash
-docker exec garage /garage key allow --read --write --owner --key my-key velero-backups
-docker exec garage /garage key allow --read --write --owner --key my-key cnpg-backups
+docker exec garage /garage bucket allow velero-backups --read --write --owner --key k3s-key
+docker exec garage /garage bucket allow cnpg-backups --read --write --owner --key k3s-key
 ```
 
 Vous pouvez maintenant utiliser les identifiants S3 dans la configuration de votre homelab !
