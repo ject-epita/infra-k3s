@@ -13,6 +13,9 @@
 # Hardlinks work because *arr, qBittorrent and Jellyfin all use the same underlying
 # NFS filesystem (media-data-pvc). The mount path per container is irrelevant for
 # hardlink support; only the filesystem identity matters.
+#
+# Note: media and photos namespaces are created by the media-namespaces release
+# which runs before this one in helmfile.yaml.
 resources:
   # Single shared NFS claim for all media + downloads (hardlink support)
   - apiVersion: v1

@@ -1,10 +1,7 @@
 environments:
   default:
     values:
-      - "{{ env "PWD" }}/values.yaml"
-  homelab:
-    values:
-      - "{{ env "PWD" }}/environments/homelab.yaml.gotmpl"
+      - "{{ env "PWD" }}/environments/default.yaml.gotmpl"
       - "{{ env "PWD" }}/values.yaml"
 
 helmDefaults:
@@ -29,5 +26,5 @@ repositories:
     url: https://bjw-s-labs.github.io/helm-charts
   - name: jellyfin
     url: https://jellyfin.github.io/jellyfin-helm
-  - name: incubator
-    url: https://charts.helm.sh/incubator
+  - name: bedag
+    url: https://bedag.github.io/helm-charts

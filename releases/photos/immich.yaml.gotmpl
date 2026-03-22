@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: immich
-    installed: {{ dig "features" "immich" "app" true .Values }}
+    condition: features.immich.app.enabled
     namespace: photos
     chart: immich/immich
     version: "0.10.3"

@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: seerr
-    installed: {{ dig "features" "seerr" true .Values }}
+    condition: features.seerr.enabled
     namespace: media
     chart: bjw-s/app-template
     version: "4.6.2"

@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: sonarr
-    installed: {{ dig "features" "sonarr" true .Values }}
+    condition: features.sonarr.enabled
     namespace: media
     chart: bjw-s/app-template
     version: "4.6.2"

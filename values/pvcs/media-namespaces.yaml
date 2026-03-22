@@ -1,0 +1,11 @@
+# Namespaces for media/photos services
+# Must be deployed before media-pvcs so namespaces exist when PVCs are created
+resources:
+  - apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: media
+  - apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: photos

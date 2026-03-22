@@ -28,10 +28,10 @@ server:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     hosts:
-      - host: "auth.{{ requiredEnv "DOMAIN" }}"
-        paths:
-          - path: /
-            pathType: Prefix
+      - "auth.{{ requiredEnv "DOMAIN" }}"
+    paths:
+      - /
+    pathType: Prefix
     tls: []
   resources:
     requests:

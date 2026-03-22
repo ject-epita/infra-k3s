@@ -11,6 +11,7 @@ helmfiles:
   - path: releases/infra/cnpg-operator.yaml.gotmpl
   - path: releases/infra/velero.yaml.gotmpl
   - path: releases/infra/traefik-config.yaml.gotmpl
+  - path: releases/infra/media-namespaces.yaml.gotmpl
   - path: releases/infra/media-pvcs.yaml.gotmpl
 
   # 2. Auth namespace: DB first, then app

@@ -2,9 +2,9 @@ bases:
   - ../../bases/default.yaml.gotmpl
 
 releases:
-  - name: traefik-config
-    namespace: kube-system
+  - name: media-namespaces
+    namespace: default
     chart: bedag/raw
     version: "2.0.2"
     values:
-      - ../../values/traefik/values.yaml.gotmpl
+      - ../../values/pvcs/media-namespaces.yaml

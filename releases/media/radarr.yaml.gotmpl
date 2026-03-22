@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: radarr
-    installed: {{ dig "features" "radarr" true .Values }}
+    condition: features.radarr.enabled
     namespace: media
     chart: bjw-s/app-template
     version: "4.6.2"

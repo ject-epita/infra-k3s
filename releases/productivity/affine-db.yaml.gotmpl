@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: affine-db
-    installed: {{ dig "features" "affine" "db" true .Values }}
+    condition: features.affine.db.enabled
     namespace: productivity
     chart: cnpg/cluster
     version: "0.6.0"

@@ -1,31 +1,46 @@
-# Feature toggles — set to false to disable a service without removing its config.
+# Feature toggles — set enabled: false to disable a service without removing its config.
 # Infrastructure releases are always deployed and not toggleable.
 
 features:
   # --- Auth ---
   authentik:
-    app: false
-    db: false
+    app:
+      enabled: false
+    db:
+      enabled: false
 
   # --- Photos ---
   immich:
-    app: false
-    db: false
+    app:
+      enabled: false
+    db:
+      enabled: false
 
   # --- Productivity ---
   affine:
-    app: false
-    db: false
-  n8n: false
-  vaultwarden: false
+    app:
+      enabled: false
+    db:
+      enabled: false
+  n8n:
+    enabled: false
+  vaultwarden:
+    enabled: true
 
   # --- Media ---
   jellyfin:
-    app: false
-    hardwareDecoding: false
-  seerr: false
-  qbittorrent: false
-  radarr: false
-  sonarr: false
-  prowlarr: false
-  flaresolverr: false
+    app:
+      enabled: false
+    hardwareDecoding: false   # consumed via dig in values template, not a condition
+  seerr:
+    enabled: false
+  qbittorrent:
+    enabled: false
+  radarr:
+    enabled: false
+  sonarr:
+    enabled: false
+  prowlarr:
+    enabled: false
+  flaresolverr:
+    enabled: false

@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: qbittorrent
-    installed: {{ dig "features" "qbittorrent" true .Values }}
+    condition: features.qbittorrent.enabled
     namespace: media
     chart: bjw-s/app-template
     version: "4.6.2"

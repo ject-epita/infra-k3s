@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: affine
-    installed: {{ dig "features" "affine" "app" true .Values }}
+    condition: features.affine.app.enabled
     namespace: productivity
     chart: bjw-s/app-template
     version: "4.6.2"

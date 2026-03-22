@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: authentik
-    installed: {{ dig "features" "authentik" "app" true .Values }}
+    condition: features.authentik.app.enabled
     namespace: auth
     chart: goauthentik/authentik
     version: "2026.2.1"

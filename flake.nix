@@ -14,15 +14,22 @@
     in
     {
       devShells = forEachSupportedSystem ({ pkgs }: {
-        environment = {
-          KUBECONFIG = "./kubeconfig";
-        };
         default = pkgs.mkShell {
+          shellHook = ''
+            export KUBECONFIG="$PWD/kubeconfig"
+          '';
           packages = with pkgs; [
-            kubernetes-helm
+            (wrapHelm kubernetes-helm {
+              plugins = with pkgs.kubernetes-helmPlugins; [
+                helm-diff
+                helm-secrets
+                helm-s3
+              ];
+            })
             helmfile
             kubectl
             k9s
+	    k3s
             kubectx
             stern
             velero

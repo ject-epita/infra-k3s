@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: immich-db
-    installed: {{ dig "features" "immich" "db" true .Values }}
+    condition: features.immich.db.enabled
     namespace: photos
     chart: cnpg/cluster
     version: "0.6.0"

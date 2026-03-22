@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: jellyfin
-    installed: {{ dig "features" "jellyfin" "app" true .Values }}
+    condition: features.jellyfin.app.enabled
     namespace: media
     chart: jellyfin/jellyfin
     version: "2.7.0"

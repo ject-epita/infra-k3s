@@ -4,10 +4,24 @@ bases:
 releases:
   - name: snapshot-class-local-path
     namespace: kube-system
-    chart: incubator/raw
-    version: "0.2.5"
+    chart: bedag/raw
+    version: "2.0.2"
+    disableValidationOnInstall: true
     values:
       - resources:
+          # StorageClass for node-local config/database volumes (Traefik ACME, CNPG clusters, etc.)
+          # Uses k3s's built-in local-path provisioner. Data lives on the node at
+          # /var/lib/rancher/k3s/storage/ — not replicated, not snapshotable.
+          - apiVersion: storage.k8s.io/v1
+            kind: StorageClass
+            metadata:
+              name: local-config
+              annotations:
+                storageclass.kubernetes.io/is-default-class: "false"
+            provisioner: rancher.io/local-path
+            reclaimPolicy: Retain
+            volumeBindingMode: WaitForFirstConsumer
+
           - apiVersion: snapshot.storage.k8s.io/v1
             kind: VolumeSnapshotClass
             metadata:

@@ -1,11 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
-  ],
-  "labels": [
-    "dependencies"
-  ],
+  "extends": ["config:recommended"],
+  "labels": ["dependencies"],
   "commitMessagePrefix": "chore(deps):",
   "nix": {
     "enabled": true
@@ -19,35 +15,33 @@
     "immich": "https://immich-app.github.io/immich-charts",
     "bjw-s": "https://bjw-s-labs.github.io/helm-charts",
     "jellyfin": "https://jellyfin.github.io/jellyfin-helm",
-    "incubator": "https://charts.helm.sh/incubator"
+    "itscontained": "https://charts.itscontained.io"
   },
   "packageRules": [
     {
       "matchUpdateTypes": ["major"],
-      "matchPackageNames": ["ghcr.io/cloudnative-pg/postgresql", "ghcr.io/tensorchord/cloudnative-vectorchord"],
+      "matchPackageNames": [
+        "ghcr.io/cloudnative-pg/postgresql",
+        "ghcr.io/tensorchord/cloudnative-vectorchord"
+      ],
       "draftPR": true,
-      "prBodyNotes": ["⚠️ **MAJOR DATABASE UPGRADE** ⚠️\n\nPlease read the upgrade guide before merging this PR: [docs/database-major-version-upgrade.md](docs/database-major-version-upgrade.md)"],
+      "prBodyNotes": [
+        "⚠️ **MAJOR DATABASE UPGRADE** ⚠️\n\nPlease read the upgrade guide before merging this PR: [docs/database-major-version-upgrade.md](docs/database-major-version-upgrade.md)"
+      ],
       "labels": ["major-db-upgrade"]
     },
     {
-      "matchManagers": [
-        "nix"
-      ],
+      "matchManagers": ["nix"],
       "groupName": "nix flakes",
       "commitMessagePrefix": "chore(nix):"
     },
     {
-      "matchManagers": [
-        "helmfile",
-        "helm-values"
-      ],
+      "matchManagers": ["helmfile", "helm-values"],
       "groupName": "helm charts",
       "commitMessagePrefix": "chore(helm):"
     },
     {
-      "matchManagers": [
-        "docker"
-      ],
+      "matchManagers": ["docker"],
       "groupName": "docker images",
       "commitMessagePrefix": "chore(images):"
     }
@@ -59,8 +53,6 @@
     ]
   },
   "helm-values": {
-    "managerFilePatterns": [
-      "/(^|/)values/.+/values\\.ya?ml(\\.gotmpl)?$/"
-    ]
+    "managerFilePatterns": ["/(^|/)values/.+/values\\.ya?ml(\\.gotmpl)?$/"]
   }
 }

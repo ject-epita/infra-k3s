@@ -3,7 +3,7 @@ bases:
 
 releases:
   - name: vaultwarden
-    installed: {{ dig "features" "vaultwarden" true .Values }}
+    condition: features.vaultwarden.enabled
     namespace: productivity
     chart: bjw-s/app-template
     version: "4.6.2"

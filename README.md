@@ -58,14 +58,17 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server \
   --cluster-init \
   --bind-address=100.68.81.91 \
   --advertise-address=100.68.81.91 \
-  --node-ip=192.168.1.212,2a01:e0a:469:f0a1::74c \
+  --node-ip=100.68.81.91,fd7a:115c:a1e0::8735:515b \
+  --node-external-ip=192.168.1.212,2a01:e0a:469:f0a1::74c \
   --tls-san=100.68.81.91 \
   --tls-san=fd7a:115c:a1e0::8735:515b \
   --tls-san=deb13-k3s \
   --tls-san=deb13-k3s.van-saury.ts.net \
   --cluster-cidr=10.42.0.0/16,fd00:42::/56 \
   --service-cidr=10.43.0.0/16,fd00:43::/108 \
-  --disable servicelb" sh -
+  --flannel-iface=eth0 \
+  --flannel-ipv6-masq \
+  --disable=servicelb" sh -
   ```
 - `kubectl`, `helm`, `helmfile` available in PATH
 - Intel GPU drivers present: `apt install intel-media-va-driver-non-free vainfo`
