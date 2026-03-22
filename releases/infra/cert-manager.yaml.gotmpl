@@ -1,0 +1,18 @@
+bases:
+  - ../../bases/default.yaml.gotmpl
+
+releases:
+  - name: cert-manager
+    namespace: cert-manager
+    chart: jetstack/cert-manager
+    version: "v1.20.0"
+    values:
+      - crds:
+          enabled: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi

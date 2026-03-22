@@ -1,0 +1,91 @@
+{{/*
+  Common S3/Garage configuration for all CNPG backups.
+  Defined once here, included in each ObjectStore below.
+*/}}
+{{- define "cnpg.s3Config" -}}
+endpointURL: "http://{{ requiredEnv "GARAGE_HOST" }}:3900"
+s3Credentials:
+  accessKeyId:
+    name: cnpg-garage-secret
+    key: ACCESS_KEY_ID
+  secretAccessKey:
+    name: cnpg-garage-secret
+    key: ACCESS_SECRET_KEY
+wal:
+  compression: gzip
+data:
+  compression: gzip
+{{- end -}}
+
+{{- define "cnpg.scheduledBackupSpec" -}}
+schedule: "0 0 3 * * *"
+backupOwnerReference: self
+method: plugin
+pluginConfiguration:
+  name: barman-cloud.cloudnative-pg.io
+{{- end -}}
+
+resources:
+{{- if .Values.features.authentik.db.enabled }}
+  - apiVersion: barmancloud.cnpg.io/v1
+    kind: ObjectStore
+    metadata:
+      name: authentik-db-store
+      namespace: auth
+    spec:
+      configuration:
+        destinationPath: "s3://{{ requiredEnv "CNPG_BUCKET" }}/authentik/"
+        {{- include "cnpg.s3Config" . | nindent 8 }}
+      retentionPolicy: "30d"
+  - apiVersion: postgresql.cnpg.io/v1
+    kind: ScheduledBackup
+    metadata:
+      name: authentik-db-daily
+      namespace: auth
+    spec:
+      cluster:
+        name: authentik-db-16
+      {{- include "cnpg.scheduledBackupSpec" . | nindent 6 }}
+{{- end }}
+{{- if .Values.features.immich.db.enabled }}
+  - apiVersion: barmancloud.cnpg.io/v1
+    kind: ObjectStore
+    metadata:
+      name: immich-db-store
+      namespace: photos
+    spec:
+      configuration:
+        destinationPath: "s3://{{ requiredEnv "CNPG_BUCKET" }}/immich/"
+        {{- include "cnpg.s3Config" . | nindent 8 }}
+      retentionPolicy: "30d"
+  - apiVersion: postgresql.cnpg.io/v1
+    kind: ScheduledBackup
+    metadata:
+      name: immich-db-daily
+      namespace: photos
+    spec:
+      cluster:
+        name: immich-db-16
+      {{- include "cnpg.scheduledBackupSpec" . | nindent 6 }}
+{{- end }}
+{{- if .Values.features.affine.db.enabled }}
+  - apiVersion: barmancloud.cnpg.io/v1
+    kind: ObjectStore
+    metadata:
+      name: affine-db-store
+      namespace: productivity
+    spec:
+      configuration:
+        destinationPath: "s3://{{ requiredEnv "CNPG_BUCKET" }}/affine/"
+        {{- include "cnpg.s3Config" . | nindent 8 }}
+      retentionPolicy: "30d"
+  - apiVersion: postgresql.cnpg.io/v1
+    kind: ScheduledBackup
+    metadata:
+      name: affine-db-daily
+      namespace: productivity
+    spec:
+      cluster:
+        name: affine-db-16
+      {{- include "cnpg.scheduledBackupSpec" . | nindent 6 }}
+{{- end }}

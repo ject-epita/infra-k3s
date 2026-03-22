@@ -5,34 +5,40 @@ bases:
 
 helmfiles:
   # 1. Infrastructure operators (order matters)
+  - path: releases/infra/cert-manager.yaml.gotmpl
   - path: releases/infra/nfs-provisioner.yaml.gotmpl
   - path: releases/infra/snapshot-controller.yaml.gotmpl
   - path: releases/infra/snapshot-class.yaml.gotmpl
   - path: releases/infra/cnpg-operator.yaml.gotmpl
+  - path: releases/infra/barman-cloud-plugin.yaml.gotmpl
   - path: releases/infra/velero.yaml.gotmpl
   - path: releases/infra/traefik-config.yaml.gotmpl
   - path: releases/infra/media-namespaces.yaml.gotmpl
   - path: releases/infra/media-pvcs.yaml.gotmpl
 
-  # 2. Auth namespace: DB first, then app
+  # 2. Auth namespace: secrets first, then DB, then app
+  - path: releases/auth/secrets.yaml.gotmpl
   - path: releases/auth/authentik-db.yaml.gotmpl
   - path: releases/auth/authentik.yaml.gotmpl
 
-  # 3. Photos namespace: DB first, then app
-  - path: releases/photos/immich-db.yaml.gotmpl
-  - path: releases/photos/immich.yaml.gotmpl
+  # # 3. Photos namespace: DB first, then app
+  # - path: releases/photos/immich-db.yaml.gotmpl
+  # - path: releases/photos/immich.yaml.gotmpl
 
-  # 4. Productivity namespace: DBs first, then apps
-  - path: releases/productivity/affine-db.yaml.gotmpl
-  - path: releases/productivity/affine.yaml.gotmpl
-  - path: releases/productivity/n8n.yaml.gotmpl
-  - path: releases/productivity/vaultwarden.yaml.gotmpl
+  # # 4. Productivity namespace: DBs first, then apps
+  # - path: releases/productivity/affine-db.yaml.gotmpl
+  # - path: releases/productivity/affine.yaml.gotmpl
+  # - path: releases/productivity/n8n.yaml.gotmpl
+  # - path: releases/productivity/vaultwarden.yaml.gotmpl
 
-  # 5. Media namespace
-  - path: releases/media/jellyfin.yaml.gotmpl
-  - path: releases/media/seerr.yaml.gotmpl
-  - path: releases/media/qbittorrent.yaml.gotmpl
-  - path: releases/media/radarr.yaml.gotmpl
-  - path: releases/media/sonarr.yaml.gotmpl
-  - path: releases/media/prowlarr.yaml.gotmpl
-  - path: releases/media/flaresolverr.yaml.gotmpl
+  # 5. CNPG ObjectStore + ScheduledBackup CRs (after all DB clusters)
+  - path: releases/infra/cnpg-objectstores.yaml.gotmpl
+
+  # # 6. Media namespace
+  # - path: releases/media/jellyfin.yaml.gotmpl
+  # - path: releases/media/seerr.yaml.gotmpl
+  # - path: releases/media/qbittorrent.yaml.gotmpl
+  # - path: releases/media/radarr.yaml.gotmpl
+  # - path: releases/media/sonarr.yaml.gotmpl
+  # - path: releases/media/prowlarr.yaml.gotmpl
+  # - path: releases/media/flaresolverr.yaml.gotmpl

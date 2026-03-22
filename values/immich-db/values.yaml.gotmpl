@@ -1,3 +1,5 @@
+fullnameOverride: immich-db-16
+
 cluster:
   name: immich-db-16
   instances: 1
@@ -24,28 +26,11 @@ cluster:
         - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
         - CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;
 
-  backup:
-    retentionPolicy: "30d"
-    barmanObjectStore:
-      endpointURL: "http://{{ requiredEnv "GARAGE_HOST" }}:3900"
-      destinationPath: "s3://{{ requiredEnv "CNPG_BUCKET" }}/immich/"
-      s3ForcePathStyle: true
-      s3Credentials:
-        accessKeyId:
-          name: cnpg-garage-secret
-          key: ACCESS_KEY_ID
-        secretAccessKey:
-          name: cnpg-garage-secret
-          key: ACCESS_SECRET_KEY
-      wal:
-        compression: brotli
-      data:
-        compression: brotli
-
-  scheduledBackup:
-    - name: immich-db-daily
-      schedule: "0 3 * * *"
-      backupOwnerReference: self
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: immich-db-store
 
 resources:
   requests:

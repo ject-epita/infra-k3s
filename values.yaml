@@ -5,9 +5,9 @@ features:
   # --- Auth ---
   authentik:
     app:
-      enabled: false
+      enabled: true
     db:
-      enabled: false
+      enabled: true
 
   # --- Photos ---
   immich:

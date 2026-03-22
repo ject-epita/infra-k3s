@@ -1,3 +1,5 @@
+fullnameOverride: affine-db-16
+
 cluster:
   name: affine-db-16
   instances: 1
@@ -21,28 +23,11 @@ cluster:
       postInitApplicationSQL:
         - CREATE EXTENSION IF NOT EXISTS vector CASCADE;
 
-  backup:
-    retentionPolicy: "30d"
-    barmanObjectStore:
-      endpointURL: "http://{{ requiredEnv "GARAGE_HOST" }}:3900"
-      destinationPath: "s3://{{ requiredEnv "CNPG_BUCKET" }}/affine/"
-      s3ForcePathStyle: true
-      s3Credentials:
-        accessKeyId:
-          name: cnpg-garage-secret
-          key: ACCESS_KEY_ID
-        secretAccessKey:
-          name: cnpg-garage-secret
-          key: ACCESS_SECRET_KEY
-      wal:
-        compression: brotli
-      data:
-        compression: brotli
-
-  scheduledBackup:
-    - name: affine-db-daily
-      schedule: "0 3 * * *"
-      backupOwnerReference: self
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: affine-db-store
 
 resources:
   requests:
