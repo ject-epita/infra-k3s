@@ -1,0 +1,73 @@
+---
+# Test 1 : PVC local-config
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-local-pvc
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: local-config
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Test 2 : PVC nfs-media
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: test-nfs-pvc
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: nfs-media
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Pod de test qui monte les deux PVCs et écrit dedans
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-storage
+  namespace: default
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+    command:
+    - "sh"
+    - "-c"
+    - |
+      echo 'local ok' > /local/test.txt
+      echo 'nfs ok' > /nfs/test.txt
+
+      # Test hardlink sur NFS
+      echo 'fichier original' > /nfs/original.txt
+      ln /nfs/original.txt /nfs/hardlink.txt
+      echo 'modif via original' >> /nfs/original.txt
+
+      # Les deux fichiers doivent avoir le même contenu
+      echo "=== original ===" && cat /nfs/original.txt
+      echo "=== hardlink ===" && cat /nfs/hardlink.txt
+
+      # Vérifier même inode = vrai hardlink
+      echo "=== inodes (doivent être identiques) ===" 
+      stat -c "%i %n" /nfs/original.txt /nfs/hardlink.txt
+
+      echo 'Tests passed'
+      sleep 3600      
+    volumeMounts:
+    - mountPath: /local
+      name: local-vol
+    - mountPath: /nfs
+      name: nfs-vol
+  volumes:
+  - name: local-vol
+    persistentVolumeClaim:
+      claimName: test-local-pvc
+  - name: nfs-vol
+    persistentVolumeClaim:
+      claimName: test-nfs-pvc

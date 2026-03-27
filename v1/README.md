@@ -68,7 +68,8 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server \
   --service-cidr=10.43.0.0/16,fd00:43::/108 \
   --flannel-iface=eth0 \
   --flannel-ipv6-masq \
-  --disable=servicelb" sh -
+  --disable=servicelb \
+  --disable=traefik sh -
   ```
 - `kubectl`, `helm`, `helmfile` available in PATH
 - Intel GPU drivers present: `apt install intel-media-va-driver-non-free vainfo`

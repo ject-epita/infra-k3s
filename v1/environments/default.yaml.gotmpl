@@ -1,15 +1,14 @@
+# Global environment values for homelab
 domain: {{ requiredEnv "DOMAIN" | quote }}
+
 nfs:
   server: {{ requiredEnv "NFS_SERVER" | quote }}
   mediaPath: {{ requiredEnv "NFS_MEDIA_PATH" | quote }}
-
 garage:
   host: {{ requiredEnv "GARAGE_HOST" | quote }}
   endpointURL: "http://{{ requiredEnv "GARAGE_HOST" }}:3900"
   accessKey: {{ requiredEnv "GARAGE_ACCESS_KEY" | quote }}
   secretKey: {{ requiredEnv "GARAGE_SECRET_KEY" | quote }}
-  velero_bucket: {{ requiredEnv "VELERO_BUCKET" | quote }}
-  cnpg_bucket: {{ requiredEnv "CNPG_BUCKET" | quote }}
 
 storageClasses:
   config: local-config

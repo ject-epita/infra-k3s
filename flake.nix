@@ -28,12 +28,15 @@
             })
             helmfile
             kubectl
+            kubectl-cnpg
+            cmctl
             k9s
-	    k3s
+	          k3s
             kubectx
             stern
             velero
             python3
+            seabird
           ];
         };
       });

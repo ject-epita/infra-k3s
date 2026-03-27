@@ -3,6 +3,7 @@ bases:
 
 releases:
   - name: authentik
+    condition: features.authentik.app.enabled
     namespace: auth
     chart: goauthentik/authentik
     version: "2026.2.1"

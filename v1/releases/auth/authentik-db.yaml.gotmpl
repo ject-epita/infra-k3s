@@ -3,6 +3,7 @@ bases:
 
 releases:
   - name: authentik-db
+    condition: features.authentik.db.enabled
     namespace: auth
     chart: cnpg/cluster
     version: "0.6.0"

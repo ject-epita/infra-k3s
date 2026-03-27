@@ -1,24 +1,16 @@
----
-# Global settings
 global:
   image:
-    tag: "2026.2.1"
+    tag: "2026.2.0"
 
-# Authentik configuration
 authentik:
-  # Generated with `openssl rand -hex 32`
   secret_key: {{ requiredEnv "AUTHENTIK_SECRET_KEY" | quote }}
   error_reporting:
     enabled: true
-  
-  # External PostgreSQL (managed by CNPG)
   postgresql:
     host: {{ requiredEnv "AUTHENTIK_DB_HOST" | quote }}
     name: "authentik"
     user: "authentik"
     password: {{ requiredEnv "AUTHENTIK_DB_PASSWORD" | quote }}
-  
-  # Email configuration (Mailcow)
   email:
     host: {{ env "AUTHENTIK_EMAIL_HOST" | default "" | quote }}
     port: {{ env "AUTHENTIK_EMAIL_PORT" | default "587" | quote }}
@@ -28,13 +20,6 @@ authentik:
     use_tls: {{ env "AUTHENTIK_EMAIL_USE_TLS" | default "false" }}
     use_ssl: {{ env "AUTHENTIK_EMAIL_USE_SSL" | default "false" }}
 
-  # Events & GeoIP
-  events:
-    context_processors:
-      geoip: /geoip/GeoLite2-City.mmdb
-      asn: /geoip/GeoLite2-ASN.mmdb
-
-# Server configuration
 server:
   ingress:
     enabled: true
@@ -47,7 +32,7 @@ server:
     paths:
       - /
     pathType: Prefix
-  
+    tls: []
   resources:
     requests:
       cpu: 200m
@@ -56,7 +41,6 @@ server:
       cpu: 1000m
       memory: 1Gi
 
-# Worker configuration
 worker:
   resources:
     requests:
@@ -66,13 +50,16 @@ worker:
       cpu: 500m
       memory: 512Mi
 
-# Disable internal postgresql
 postgresql:
   enabled: false
 
 redis:
-  enabled: false
-
-# Monitoring
-monitoring:
-  enabled: false
+  enabled: true
+  master:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 128Mi

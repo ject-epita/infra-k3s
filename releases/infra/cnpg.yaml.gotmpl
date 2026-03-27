@@ -1,0 +1,19 @@
+bases:
+  - ../../bases/default.yaml.gotmpl
+
+releases:
+  - name: cloudnative-pg
+    namespace: cnpg-system
+    chart: cnpg/cloudnative-pg
+    version: "0.27.1"
+    values:
+      - ../../values/cnpg-operator/values.yaml
+
+  - name: barman-cloud-plugin
+    namespace: cnpg-system
+    chart: cnpg/plugin-barman-cloud
+    version: "0.5.0"
+    needs:
+      - cnpg-system/cloudnative-pg
+    values:
+      - ../../values/barman-plugin/values.yaml

@@ -1,0 +1,10 @@
+bases:
+  - ../../bases/default.yaml.gotmpl
+
+releases:
+  - name: local-config-storageclass
+    namespace: kube-system
+    chart: bedag/raw
+    version: "2.0.2"
+    values:
+      - ../../values/local-config-storageclass/values.yaml

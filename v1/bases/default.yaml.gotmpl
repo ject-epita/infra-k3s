@@ -2,31 +2,31 @@ environments:
   default:
     values:
       - "{{ env "PWD" }}/environments/default.yaml.gotmpl"
+      - "{{ env "PWD" }}/values.yaml"
 
 helmDefaults:
   wait: true
   timeout: 600
   createNamespace: true
-  cleanupOnFail: true
-  recreatePods: true
-  force: true
-  reuseValues: false
-  deleteWait: true
 
 repositories:
-  - name: jetstack
-    url: https://charts.jetstack.io
-  - name: traefik
-    url: https://traefik.github.io/charts
-  - name: nfs-subdir
-    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
   - name: cnpg
     url: https://cloudnative-pg.github.io/charts
   - name: vmware-tanzu
     url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
   - name: goauthentik
     url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
   - name: bjw-s
     url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
   - name: bedag
     url: https://bedag.github.io/helm-charts

@@ -7,7 +7,7 @@ services:
     # Depending on Synology setup, host network is often easier to expose the 3900 port to the NUC
     # but bridge with port mapping might be cleaner. Let's use port mapping.
     ports:
-      - "${GARAGE_API_PORT:?GARAGE_API_PORT is required}:3900" # S3 API
+      - "127.0.0.1:${GARAGE_API_PORT:?GARAGE_API_PORT is required}:3900" # S3 API
     environment:
       # Inject the RPC secret via environment variable for security
       - GARAGE_RPC_SECRET=${GARAGE_RPC_SECRET:?GARAGE_RPC_SECRET is required}

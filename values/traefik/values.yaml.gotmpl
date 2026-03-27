@@ -1,56 +1,73 @@
-resources:
-  # Configure k3s's built-in Traefik with Let's Encrypt ACME.
-  # This HelmChartConfig is applied to kube-system and picked up by k3s's helm-controller,
-  # which re-deploys Traefik with the new values.
-  - apiVersion: helm.cattle.io/v1
-    kind: HelmChartConfig
-    metadata:
-      name: traefik
-      namespace: kube-system
-    spec:
-      valuesContent: |-
-        additionalArguments:
-          - "--certificatesresolvers.letsencrypt.acme.email={{ requiredEnv "ACME_EMAIL" }}"
-          - "--certificatesresolvers.letsencrypt.acme.storage=/data/acme.json"
-          - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
-        # Persist ACME certificates across Traefik restarts
-        persistence:
-          enabled: true
-          storageClass: local-config
-          size: 128Mi
-        # Expose to host network so port 80/443 bind directly on the NUC
-        # Adjust if your cluster uses non-standard pod/service CIDRs
-        ports:
-          web:
-            hostPort: 80
-            redirectTo:
-              port: websecure
-          websecure:
-            hostPort: 443
+# Désactive le Service LoadBalancer par défaut de k3s — on utilise hostPort
+service:
+  enabled: false
 
-  # Authentik ForwardAuth Middleware — used by radarr, sonarr, prowlarr, qbittorrent.
-  # Reference in Ingress annotations as:
-  #   traefik.ingress.kubernetes.io/router.middlewares: kube-system-authentik-forwardauth@kubernetescrd
-  # NOTE: The forwardAuth address uses HTTPS — Authentik's Ingress must be healthy with a valid
-  # TLS certificate before the middleware will work. During initial bootstrap, deploy and verify
-  # Authentik first before enabling forward auth on other services.
-  - apiVersion: traefik.io/v1alpha1
-    kind: Middleware
-    metadata:
-      name: authentik-forwardauth
-      namespace: kube-system
-    spec:
-      forwardAuth:
-        address: "https://auth.{{ requiredEnv "DOMAIN" }}/outpost.goauthentik.io/auth/traefik"
-        trustForwardHeader: true
-        authResponseHeaders:
-          - X-authentik-username
-          - X-authentik-groups
-          - X-authentik-email
-          - X-authentik-uid
-          - X-authentik-jwt
-          - X-authentik-meta-jwks
-          - X-authentik-meta-outpost
-          - X-authentik-meta-provider
-          - X-authentik-meta-app
-          - X-authentik-meta-version
+# Configuration des ports
+ports:
+  web:
+    # Le port interne du conteneur DOIT être > 1024 car Traefik n'est pas root
+    port: 8000
+    # Mais k3s va mapper le port 80 du node sur le port 8000 du pod
+    hostPort: 80
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    # Même chose pour HTTPS
+    port: 8443
+    hostPort: 443
+
+# Persistence pour stocker acme.json entre les redémarrages
+persistence:
+  enabled: true
+  storageClass: local-config
+  size: 128Mi
+
+# Fix permissions sur acme.json (requis par Let's Encrypt)
+deployment:
+  initContainers:
+  - name: volume-permissions
+    image: busybox:latest
+    command:
+    - "sh"
+    - "-c"
+    - "touch /data/acme.json && chmod -v 600 /data/acme.json && chown 65532:65532 /data/acme.json"
+    volumeMounts:
+    - name: data
+      mountPath: /data
+
+podSecurityContext:
+  fsGroup: 65532
+  fsGroupChangePolicy: "OnRootMismatch"
+
+# On ajoute le token API en variable d'environnement pour le conteneur Traefik
+env:
+  - name: CF_DNS_API_TOKEN
+    value: {{ requiredEnv "CLOUDFLARE_DNS_API_TOKEN" | quote }}
+
+# On met à jour le résolveur
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: {{ requiredEnv "ACME_EMAIL" | quote }}
+      storage: /data/acme.json
+      dnsChallenge:
+        provider: cloudflare
+        # Cloudflare a parfois besoin d'un peu de temps pour propager le TXT
+        delayBeforeCheck: 10
+        resolvers:
+        - "1.1.1.1"
+        - "1.0.0.1"
+        - "2606:4700:4700::1111"
+        - "2606:4700:4700::1001"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi

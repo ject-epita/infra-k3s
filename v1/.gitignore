@@ -1,5 +1,5 @@
+.direnv/
 .env
 .env.bak
-.direnv/
 kubeconfig
 nas/data

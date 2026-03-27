@@ -1,19 +1,13 @@
-fullnameOverride: authentik-db-16
+mode: standalone
+type: postgresql
 
 cluster:
-  name: authentik-db-16
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:16
-
+  
   storage:
     size: 5Gi
     storageClass: local-config
-
-  postgresql:
-    parameters:
-      max_connections: "100"
-      shared_buffers: 128MB
-
+    
   bootstrap:
     initdb:
       database: authentik
@@ -21,16 +15,15 @@ cluster:
       secret:
         name: authentik-db-secret
 
-  plugins:
-    - name: barman-cloud.cloudnative-pg.io
-      isWALArchiver: true
-      parameters:
-        barmanObjectName: authentik-db-store
-
-resources:
-  requests:
-    cpu: 100m
-    memory: 256Mi
-  limits:
-    cpu: 500m
-    memory: 512Mi
+backups:
+  enabled: false
+  ## Outdated: utilise l'ancien systeme de stockage BarmanObjectStore. 
+  ## Voir PR Github https://github.com/cloudnative-pg/charts/pull/838 
+  # provider: s3
+  # retentionPolicy: "14d"
+  # s3:
+  #   bucket: {{ requiredEnv "CNPG_BUCKET" | quote }}
+  #   endpointURL: "http://{{ requiredEnv "GARAGE_HOST" }}:3900"
+  #   region: "garage"
+  #   accessKey: {{ requiredEnv "GARAGE_ACCESS_KEY" | quote }}
+  #   secretKey: {{ requiredEnv "GARAGE_SECRET_KEY" | quote }}

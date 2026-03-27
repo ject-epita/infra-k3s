@@ -1,0 +1,1527 @@
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/cert-manager.yaml.gotmpl
+
+filepath: cert-manager.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/nfs-provisioner.yaml.gotmpl
+
+filepath: nfs-provisioner.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/snapshot-controller.yaml.gotmpl
+
+filepath: snapshot-controller.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/snapshot-class.yaml.gotmpl
+
+filepath: snapshot-class.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/cnpg-operator.yaml.gotmpl
+
+filepath: cnpg-operator.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/barman-cloud-plugin.yaml.gotmpl
+
+filepath: barman-cloud-plugin.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/velero.yaml.gotmpl
+
+filepath: velero.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/traefik-config.yaml.gotmpl
+
+filepath: traefik-config.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/media-namespaces.yaml.gotmpl
+
+filepath: media-namespaces.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/media-pvcs.yaml.gotmpl
+
+filepath: media-pvcs.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/auth/secrets.yaml.gotmpl
+
+filepath: secrets.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/auth/authentik-db.yaml.gotmpl
+
+filepath: authentik-db.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+releases:
+  - chart: cnpg/cluster
+    version: 0.6.0
+    condition: features.authentik.db.enabled
+    name: authentik-db
+    namespace: auth
+    labels:
+      chart: cluster
+      name: authentik-db
+      namespace: auth
+    values:
+      - ../../values/authentik-db/values.yaml.gotmpl
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/auth/authentik.yaml.gotmpl
+
+filepath: authentik.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/releases/infra/cnpg-objectstores.yaml.gotmpl
+
+filepath: cnpg-objectstores.yaml.gotmpl
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - ../../bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
+---
+#  Source: /home/leo/Documents/titicloud/helmfile.yaml
+
+filepath: helmfile.yaml
+helmBinary: helm
+kustomizeBinary: kustomize
+environments:
+  default:
+    values:
+      - /home/leo/Documents/titicloud/environments/default.yaml.gotmpl
+      - /home/leo/Documents/titicloud/values.yaml
+bases:
+  - bases/default.yaml.gotmpl
+helmDefaults:
+  verify: false
+  enableDNS: false
+  devel: false
+  wait: true
+  waitRetries: 0
+  waitForJobs: false
+  timeout: 600
+  recreatePods: false
+  force: false
+  atomic: false
+  forceConflicts: false
+  createNamespace: true
+  skipDeps: false
+  skipRefresh: false
+  reuseValues: false
+helmfiles:
+  - path: releases/infra/cert-manager.yaml.gotmpl
+  - path: releases/infra/nfs-provisioner.yaml.gotmpl
+  - path: releases/infra/snapshot-controller.yaml.gotmpl
+  - path: releases/infra/snapshot-class.yaml.gotmpl
+  - path: releases/infra/cnpg-operator.yaml.gotmpl
+  - path: releases/infra/barman-cloud-plugin.yaml.gotmpl
+  - path: releases/infra/velero.yaml.gotmpl
+  - path: releases/infra/traefik-config.yaml.gotmpl
+  - path: releases/infra/media-namespaces.yaml.gotmpl
+  - path: releases/infra/media-pvcs.yaml.gotmpl
+  - path: releases/auth/secrets.yaml.gotmpl
+  - path: releases/auth/authentik-db.yaml.gotmpl
+  - path: releases/auth/authentik.yaml.gotmpl
+  - path: releases/infra/cnpg-objectstores.yaml.gotmpl
+repositories:
+  - name: cnpg
+    url: https://cloudnative-pg.github.io/charts
+  - name: vmware-tanzu
+    url: https://vmware-tanzu.github.io/helm-charts
+  - name: nfs-subdir
+    url: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+  - name: piraeus
+    url: https://piraeus.io/helm-charts
+  - name: goauthentik
+    url: https://charts.goauthentik.io
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: immich
+    url: https://immich-app.github.io/immich-charts
+  - name: bjw-s
+    url: https://bjw-s-labs.github.io/helm-charts
+  - name: jellyfin
+    url: https://jellyfin.github.io/jellyfin-helm
+  - name: bedag
+    url: https://bedag.github.io/helm-charts
+templates: {}
+renderedvalues:
+  domain: kube.thivillon.org
+  features:
+    affine:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    authentik:
+      app:
+        enabled: true
+      db:
+        enabled: true
+    flaresolverr:
+      enabled: false
+    immich:
+      app:
+        enabled: false
+      db:
+        enabled: false
+    jellyfin:
+      app:
+        enabled: false
+      hardwareDecoding: false
+    n8n:
+      enabled: false
+    prowlarr:
+      enabled: false
+    qbittorrent:
+      enabled: false
+    radarr:
+      enabled: false
+    seerr:
+      enabled: false
+    sonarr:
+      enabled: false
+    vaultwarden:
+      enabled: true
+  garage:
+    accessKey: GKb419df3115250f2e43ea2608
+    endpointURL: http://192.168.1.63:3900
+    host: 192.168.1.63
+    secretKey: 5f0713fde9b50586da2def64aa729681d388fcc24a861de3a24c10e1025b70a1
+  nfs:
+    mediaPath: /volume1/titiflix-medias
+    server: 192.168.1.63
+  storageClasses:
+    config: local-config
+    media: nfs-media
