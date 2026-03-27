@@ -2,9 +2,9 @@ bases:
   - ../../bases/default.yaml.gotmpl
 
 releases:
-  - name: authentik-db
+  - name: authentik-db-16
     namespace: auth
     chart: cnpg/cluster
     version: "0.6.0"
     values:
-      - ../../values/authentik-db/values.yaml.gotmpl
+      - ../../values/authentik-db-16/values.yaml.gotmpl
