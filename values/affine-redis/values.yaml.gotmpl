@@ -1,0 +1,41 @@
+controllers:
+  redis:
+    containers:
+      app:
+        image:
+          repository: redis
+          tag: "7.2-alpine"
+        command:
+          - /bin/sh
+          - -c
+        args:
+          - >-
+            exec redis-server --appendonly yes --save 60 1 --requirepass
+            "$REDIS_PASSWORD"
+        env:
+          REDIS_PASSWORD: {{ requiredEnv "AFFINE_REDIS_PASSWORD" | quote }}
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+
+service:
+  app:
+    controller: redis
+    ports:
+      redis:
+        port: 6379
+
+# persistence:
+#   data:
+#     enabled: true
+#     storageClass: local-config
+#     accessMode: ReadWriteOnce
+#     size: 5Gi
+#     advancedMounts:
+#       redis:
+#         app:
+#           - path: /data

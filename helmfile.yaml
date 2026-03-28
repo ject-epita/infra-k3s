@@ -13,5 +13,11 @@ helmfiles:
 
 # Layer 2 — Auth namespace
 - path: releases/auth/secrets.yaml.gotmpl
-- path: releases/auth/authentik-db.yaml.gotmpl
+- path: releases/auth/authentik-db-16.yaml.gotmpl
 - path: releases/auth/authentik.yaml.gotmpl
+
+# Layer 3 — AFFiNE namespace
+- path: releases/affine/secrets.yaml.gotmpl
+- path: releases/affine/affine-db-16.yaml.gotmpl
+- path: releases/affine/redis.yaml.gotmpl
+- path: releases/affine/affine.yaml.gotmpl

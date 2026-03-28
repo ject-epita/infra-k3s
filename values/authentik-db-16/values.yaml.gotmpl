@@ -3,27 +3,59 @@ type: postgresql
 
 cluster:
   instances: 1
-  
+
+  # Configuration du stockage des données
   storage:
     size: 5Gi
     storageClass: local-config
-    
-  bootstrap:
-    initdb:
-      database: authentik
-      owner: authentik
-      secret:
-        name: authentik-db-secret
 
+  # Séparation du WAL storage (Recommandé par l'autre IA)
+  # walStorage:
+  #   enabled: true
+  #   size: 2Gi
+  #   storageClass: local-config
+
+  # Optimisations critiques pour Single-Node k3s
+  enablePDB: false
+  affinity:
+    topologyKey: ""
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+
+  # Initialisation de la BDD via notre secret (pour qu'Authentik connaisse le mot de passe)
+  initdb:
+    database: authentik
+    owner: authentik
+    secret:
+      name: authentik-db-secret
+
+# Le chart gère les Backups, l'ObjectStore, les Secrets S3 et les Crons
 backups:
   enabled: false
-  ## Outdated: utilise l'ancien systeme de stockage BarmanObjectStore. 
-  ## Voir PR Github https://github.com/cloudnative-pg/charts/pull/838 
   # provider: s3
+  # endpointURL: "http://{{ requiredEnv "GARAGE_HOST" }}:3900"
+  # destinationPath: "s3://{{ requiredEnv "CNPG_BUCKET" }}/authentik"
   # retentionPolicy: "14d"
+  
   # s3:
   #   bucket: {{ requiredEnv "CNPG_BUCKET" | quote }}
-  #   endpointURL: "http://{{ requiredEnv "GARAGE_HOST" }}:3900"
+  #   path: "/authentik"
   #   region: "garage"
+  #   s3ForcePathStyle: true   # INDISPENSABLE POUR GARAGE
   #   accessKey: {{ requiredEnv "GARAGE_ACCESS_KEY" | quote }}
   #   secretKey: {{ requiredEnv "GARAGE_SECRET_KEY" | quote }}
+
+  # wal:
+  #   compression: gzip
+  #   maxParallel: 2
+
+  # data:
+  #   compression: gzip
+  #   jobs: 2
+
+  # # Planification du Base Backup (Tous les jours à minuit)
+  # scheduledBackups:
+  #   - name: daily-backup
+  #     schedule: "0 0 0 * * *"
+  #     backupOwnerReference: self
+  #     method: barmanObjectStore

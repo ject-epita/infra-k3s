@@ -1,0 +1,10 @@
+bases:
+  - ../../bases/default.yaml.gotmpl
+
+releases:
+  - name: affine
+    namespace: affine
+    chart: dev-charts/affine
+    version: "1.0.4"
+    values:
+      - ../../values/affine/values.yaml.gotmpl

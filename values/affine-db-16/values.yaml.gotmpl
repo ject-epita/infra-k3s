@@ -1,0 +1,25 @@
+cluster:
+  name: affine-db-16
+  instances: 1
+
+  storage:
+    size: 10Gi
+    storageClass: local-config
+
+  # Optimisations single-node k3s.
+  enablePDB: false
+  affinity:
+    topologyKey: ""
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+
+  initdb:
+    database: affine
+    owner: affine
+    secret:
+      name: affine-db-secret
+    postInitApplicationSQL:
+      - CREATE EXTENSION IF NOT EXISTS vector CASCADE;
+
+backups:
+  enabled: false

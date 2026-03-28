@@ -1,0 +1,59 @@
+app:
+  type: selfhosted
+  externalUrl: "https://affine.{{ requiredEnv "DOMAIN" }}"
+  env: production
+
+db:
+  database:
+    host: affine-db-16-cluster-rw.affine.svc.cluster.local
+    port: 5432
+    user: affine
+    database: affine
+    # Reutilise le secret cree par values/secrets/affine.yaml.gotmpl.
+    existingSecret: affine-db-secret
+    existingSecretPasswordKey: password
+
+  redis:
+    host: affine-redis.affine.svc.cluster.local
+    port: 6379
+    username: ""
+    database: 0
+    # Reutilise le secret cree par values/secrets/affine.yaml.gotmpl.
+    existingSecret: redis
+    existingSecretPasswordKey: redis-password
+
+front:
+  replicaCount: 1
+  services:
+    sync:
+      annotations: {}
+    renderer:
+      annotations: {}
+  ingress:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+    hosts:
+      - host: "affine.{{ requiredEnv "DOMAIN" }}"
+        paths:
+          - path: /
+            pathType: Prefix
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+graphql:
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi

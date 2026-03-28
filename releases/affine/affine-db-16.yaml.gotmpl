@@ -1,0 +1,10 @@
+bases:
+  - ../../bases/default.yaml.gotmpl
+
+releases:
+  - name: affine-db-16
+    namespace: affine
+    chart: cnpg/cluster
+    version: "0.6.0"
+    values:
+      - ../../values/affine-db-16/values.yaml.gotmpl

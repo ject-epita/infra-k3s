@@ -22,6 +22,7 @@
             (wrapHelm kubernetes-helm {
               plugins = with pkgs.kubernetes-helmPlugins; [
                 helm-diff
+                helm-git
                 helm-secrets
                 helm-s3
               ];
