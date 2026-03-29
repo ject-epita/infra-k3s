@@ -63,20 +63,26 @@
     }
   ],
   "helmfile": {
-    "fileMatch": ["(^|/)helmfile\\.ya?ml(\\.gotmpl)?$", "(^|/)releases/.+\\.ya?ml(\\.gotmpl)?$"]
+    "managerFilePatterns": [
+      "/(^|/)helmfile\.ya?ml(\.gotmpl)?$/",
+      "/(^|/)releases/.+\.ya?ml(\.gotmpl)?$/"
+    ]
   },
   "helm-values": {
-    "fileMatch": ["(^|/)values/.+/values\\.ya?ml(\\.gotmpl)?$"]
+    "managerFilePatterns": [
+      "/(^|/)values/.+/values\.ya?ml(\.gotmpl)?$/"
+    ]
   },
   "kubernetes": {
-    "fileMatch": ["(^|/)tests/.+\\.ya?ml(\\.gotmpl)?$"]
+    "managerFilePatterns": [
+      "/(^|/)tests/.+\.ya?ml(\.gotmpl)?$/"
+    ]
   },
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["(^|/)values/.+/values\\.ya?ml(\\.gotmpl)?$"],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)(?: versioning=(?<versioning>.*?))?\\s+tag:\\s+\"(?<currentValue>.*)\""
-      ]
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/)values/.+/values\.ya?ml(\.gotmpl)?$/"],
+      "matchStrings": ["# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)(?: versioning=(?<versioning>.*?))?\s+tag:\s+\"(?<currentValue>.*)\""]
     }
   ]
 }
