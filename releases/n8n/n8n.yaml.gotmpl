@@ -1,0 +1,10 @@
+bases:
+  - ../../bases/default.yaml.gotmpl
+
+releases:
+  - name: n8n
+    namespace: n8n
+    chart: bjw-s/app-template
+    version: "4.6.2"
+    values:
+      - ../../values/n8n/values.yaml.gotmpl

@@ -24,3 +24,6 @@ helmfiles:
 
 # Layer 4 — Sure namespace
 - path: releases/sure/sure.yaml.gotmpl
+
+# Layer 5 — n8n namespace
+- path: releases/n8n/n8n.yaml.gotmpl

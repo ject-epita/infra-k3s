@@ -1,0 +1,34 @@
+controllers:
+  main:
+    containers:
+      main:
+        # Change this image repository and tag to use your custom n8n image
+        image:
+          repository: docker.n8n.io/n8nio/n8n
+          tag: "2.13.4"
+        env:
+          # Tell n8n how it should be reached using the DOMAIN environment variable
+          WEBHOOK_URL: "https://n8n.{{ requiredEnv "DOMAIN" }}"
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: 5678
+
+ingress:
+  main:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+    hosts:
+      - host: "n8n.{{ requiredEnv "DOMAIN" }}"
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: main
+              port: http

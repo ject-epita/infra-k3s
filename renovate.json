@@ -1,0 +1,82 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "labels": ["dependencies"],
+  "commitMessagePrefix": "chore(deps):",
+  "ignorePaths": ["v1/**"],
+  "nix": {
+    "enabled": true
+  },
+  "registryAliases": {
+    "cnpg": "https://cloudnative-pg.github.io/charts",
+    "vmware-tanzu": "https://vmware-tanzu.github.io/helm-charts",
+    "nfs-subdir": "https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner",
+    "piraeus": "https://piraeus.io/helm-charts",
+    "goauthentik": "https://charts.goauthentik.io",
+    "immich": "https://immich-app.github.io/immich-charts",
+    "bjw-s": "https://bjw-s-labs.github.io/helm-charts",
+    "jellyfin": "https://jellyfin.github.io/jellyfin-helm",
+    "itscontained": "https://charts.itscontained.io",
+    "traefik": "https://traefik.github.io/charts",
+    "jetstack": "https://charts.jetstack.io",
+    "bedag": "https://bedag.github.io/helm-charts",
+    "dev-charts": "https://dalamudx.github.io/helm-charts",
+    "sure": "https://we-promise.github.io/sure/"
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "matchPackageNames": [
+        "ghcr.io/cloudnative-pg/postgresql",
+        "ghcr.io/tensorchord/cloudnative-vectorchord"
+      ],
+      "draftPR": true,
+      "prBodyNotes": [
+        "⚠️ **MAJOR DATABASE UPGRADE** ⚠️\n\nPlease read the upgrade guide before merging this PR: [docs/database-major-version-upgrade.md](docs/database-major-version-upgrade.md)"
+      ],
+      "labels": ["major-db-upgrade"]
+    },
+    {
+      "matchManagers": ["nix"],
+      "groupName": "nix flakes",
+      "commitMessagePrefix": "chore(nix):"
+    },
+    {
+      "matchManagers": ["helmfile", "helm-values"],
+      "groupName": "helm charts",
+      "commitMessagePrefix": "chore(helm):"
+    },
+    {
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "groupName": "docker images",
+      "commitMessagePrefix": "chore(images):"
+    },
+    {
+      "matchManagers": ["kubernetes"],
+      "groupName": "kubernetes manifests",
+      "commitMessagePrefix": "chore(k8s):"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions",
+      "commitMessagePrefix": "chore(actions):"
+    }
+  ],
+  "helmfile": {
+    "fileMatch": ["(^|/)helmfile\\.ya?ml(\\.gotmpl)?$", "(^|/)releases/.+\\.ya?ml(\\.gotmpl)?$"]
+  },
+  "helm-values": {
+    "fileMatch": ["(^|/)values/.+/values\\.ya?ml(\\.gotmpl)?$"]
+  },
+  "kubernetes": {
+    "fileMatch": ["(^|/)tests/.+\\.ya?ml(\\.gotmpl)?$"]
+  },
+  "regexManagers": [
+    {
+      "fileMatch": ["(^|/)values/.+/values\\.ya?ml(\\.gotmpl)?$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)(?: versioning=(?<versioning>.*?))?\\s+tag:\\s+\"(?<currentValue>.*)\""
+      ]
+    }
+  ]
+}
