@@ -3,3 +3,4 @@
 .direnv/
 kubeconfig
 nas/data
+out/
