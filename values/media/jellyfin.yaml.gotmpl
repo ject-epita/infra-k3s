@@ -1,8 +1,5 @@
-{{ $mode := env "JELLYFIN_ENV" | default "dev" -}}
-{{- $baseDomain := (eq $mode "prod") | ternary (requiredEnv "DOMAIN_PROD") (requiredEnv "DOMAIN_DEV") -}}
-{{- $host := printf "flix.%s" $baseDomain -}}
 # Jellyfin configuration — Official Chart 2.x
-# Docs: https://github.com/jellyfin/jellyfin-helm
+# Docs: https://jellyfin.org
 
 image:
   # renovate: datasource=docker depName=docker.io/jellyfin/jellyfin
@@ -14,7 +11,7 @@ jellyfin:
     - name: TZ
       value: "UTC"
     - name: JELLYFIN_PublishedServerUrl
-      value: "https://{{ $host }}"
+      value: "https://jellyfin.{{ requiredEnv "DOMAIN" }}"
 
 ingress:
   enabled: true
@@ -23,7 +20,7 @@ ingress:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
   hosts:
-    - host: {{ $host | quote }}
+    - host: "jellyfin.{{ requiredEnv "DOMAIN" }}"
       paths:
         - path: /
           pathType: Prefix

@@ -16,13 +16,13 @@ helmfiles:
 - path: releases/auth/authentik.yaml.gotmpl
 
 # # Layer 3 — Sure namespace
-# - path: releases/sure/sure.yaml.gotmpl
+- path: releases/sure/sure.yaml.gotmpl
 
 # # Layer 4 — n8n namespace
-# - path: releases/n8n/n8n.yaml.gotmpl
+- path: releases/n8n/n8n.yaml.gotmpl
 
 # # Layer 5 — Vaultwarden namespace
-# - path: releases/vaultwarden/vaultwarden.yaml.gotmpl
+- path: releases/vaultwarden/vaultwarden.yaml.gotmpl
 
 # Layer 6 — Media namespace
 - path: releases/media/secrets.yaml.gotmpl

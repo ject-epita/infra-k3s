@@ -1,8 +1,5 @@
-{{ $mode := env "SEERR_ENV" | default "dev" -}}
-{{- $baseDomain := (eq $mode "prod") | ternary (requiredEnv "DOMAIN_PROD") (requiredEnv "DOMAIN_DEV") -}}
-{{- $host := printf "req.%s" $baseDomain -}}
 # Seerr (Jellyseerr) configuration — bjw-s/app-template 4.x
-# Docs: https://github.com/Fallenbagel/jellyseerr
+# Docs: https://jellyseerr.dev
 
 controllers:
   main:
@@ -45,7 +42,7 @@ ingress:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     hosts:
-      - host: {{ $host | quote }}
+      - host: "seerr.{{ requiredEnv "DOMAIN" }}"
         paths:
           - path: /
             pathType: Prefix

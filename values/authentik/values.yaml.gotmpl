@@ -1,6 +1,3 @@
-{{ $mode := env "AUTHENTIK_ENV" | default "dev" -}}
-{{- $baseDomain := (eq $mode "prod") | ternary (requiredEnv "DOMAIN_PROD") (requiredEnv "DOMAIN_DEV") -}}
-{{- $host := printf "auth.%s" $baseDomain -}}
 # Global settings
 global:
   image:
@@ -13,7 +10,7 @@ authentik:
   secret_key: {{ requiredEnv "AUTHENTIK_SECRET_KEY" | quote }}
   error_reporting:
     enabled: true
-  
+
   # External PostgreSQL (managed by CNPG)
   postgresql:
     host: {{ requiredEnv "AUTHENTIK_DB_HOST" | quote }}
@@ -48,11 +45,11 @@ server:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     hosts:
-      - {{ $host | quote }}
+      - "authentik.{{ requiredEnv "DOMAIN" }}"
     paths:
       - /
     pathType: Prefix
-  
+
   resources:
     requests:
       cpu: 200m

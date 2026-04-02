@@ -1,8 +1,5 @@
-{{ $mode := env "SONARR_ENV" | default "dev" -}}
-{{- $baseDomain := (eq $mode "prod") | ternary (requiredEnv "DOMAIN_PROD") (requiredEnv "DOMAIN_DEV") -}}
-{{- $host := printf "sonarr.%s" $baseDomain -}}
 # Sonarr configuration — bjw-s/app-template 4.x
-# Docs: https://sonarr.tv/
+# Docs: https://sonarr.net/#/docker
 
 controllers:
   main:
@@ -52,7 +49,7 @@ ingress:
       # ForwardAuth via Authentik
       traefik.ingress.kubernetes.io/router.middlewares: "media-security-headers@kubernetescrd,media-auth-authentik@kubernetescrd"
     hosts:
-      - host: {{ $host | quote }}
+      - host: "sonarr.{{ requiredEnv "DOMAIN" }}"
         paths:
           - path: /
             pathType: Prefix

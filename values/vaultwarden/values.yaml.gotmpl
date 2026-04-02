@@ -1,6 +1,3 @@
-{{- $mode := env "VAULTWARDEN_ENV" | default "dev" -}}
-{{- $baseDomain := (eq $mode "prod") | ternary (requiredEnv "DOMAIN_PROD") (requiredEnv "DOMAIN_DEV") -}}
-{{- $host := printf "vault.%s" $baseDomain -}}
 controllers:
   vaultwarden:
     strategy: Recreate
@@ -12,7 +9,7 @@ controllers:
           tag: "1.35.4-alpine"
         env:
           ADMIN_TOKEN: {{ requiredEnv "VAULTWARDEN_ADMIN_TOKEN" | quote }}
-          DOMAIN: "https://{{ $host }}"
+          DOMAIN: "https://vault.{{ requiredEnv "DOMAIN" }}"
           SIGNUPS_ALLOWED: "false"
         resources:
           requests:
@@ -46,7 +43,7 @@ ingress:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     hosts:
-      - host: {{ $host | quote }}
+      - host: "vault.{{ requiredEnv "DOMAIN" }}"
         paths:
           - path: /
             pathType: Prefix
