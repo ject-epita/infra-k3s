@@ -30,7 +30,9 @@ helmfiles:
 - path: releases/media/middlewares.yaml.gotmpl
 - path: releases/media/jellyfin.yaml.gotmpl
 
-# - path: releases/media/seerr.yaml.gotmpl
 - path: releases/media/prowlarr.yaml.gotmpl
 - path: releases/media/sonarr.yaml.gotmpl
 - path: releases/media/radarr.yaml.gotmpl
+- path: releases/media/seerr.yaml.gotmpl
+
+- path: releases/media/qbittorrent.yaml.gotmpl

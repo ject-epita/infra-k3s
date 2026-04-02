@@ -1,0 +1,160 @@
+# qBittorrent + Gluetun (ProtonVPN WireGuard) — bjw-s/app-template 4.x
+# Port forwarding géré nativement par Gluetun via VPN_PORT_FORWARDING_UP_COMMAND
+
+controllers:
+  main:
+    strategy: Recreate
+    pod:
+      # Gluetun nécessite NET_ADMIN pour créer le tunnel TUN
+      securityContext: {}
+
+
+    containers:
+      # ─── 1. Gluetun (VPN gateway) ─────────────────────────────────────────────
+      # Gluetun doit être listé EN PREMIER pour qu'il contrôle le namespace réseau
+      gluetun:
+        image:
+          # renovate: datasource=github-releases depName=qdm12/gluetun
+          repository: qmcgaw/gluetun
+          tag: "v3.40.0"
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+          runAsNonRoot: false
+          runAsUser: 0
+        env:
+          TZ: "UTC"
+          VPN_SERVICE_PROVIDER: "protonvpn"
+          VPN_TYPE: "wireguard"
+          VPN_PORT_FORWARDING: "on"
+          VPN_PORT_FORWARDING_PROVIDER: "protonvpn"
+          SERVER_COUNTRIES: "France"
+          # Script monté via ConfigMap — Gluetun exécute ce script avec la variable PORT
+          # Allows {{PORT}} to stay as a Gluetun placeholder (not a Go template)
+          VPN_PORT_FORWARDING_UP_COMMAND: "/gluetun/scripts/update-port.sh"
+
+          WIREGUARD_PRIVATE_KEY:
+            valueFrom:
+              secretKeyRef:
+                name: media-secrets
+                key: PROTON_WIREGUARD_PRIVATE_KEY
+          WIREGUARD_ADDRESSES:
+            valueFrom:
+              secretKeyRef:
+                name: media-secrets
+                key: PROTON_WIREGUARD_ADDRESSES
+        resources:
+          requests:
+            cpu: 25m
+            memory: 64Mi
+          limits:
+            memory: 256Mi
+        probes:
+          liveness:
+            enabled: true
+            custom: true
+            spec:
+              httpGet:
+                path: /
+                port: 9999
+              initialDelaySeconds: 30
+              periodSeconds: 30
+              failureThreshold: 3
+
+      # ─── 2. qBittorrent ───────────────────────────────────────────────────────
+      main:
+        image:
+          # renovate: datasource=github-releases depName=qbittorrent/qBittorrent
+          repository: lscr.io/linuxserver/qbittorrent
+          tag: "5.0.4"
+        ports:
+          - name: http
+            containerPort: &port 8080
+        env:
+          TZ: "UTC"
+          PUID: "1000"
+          PGID: "1000"
+          WEBUI_PORT: "8080"
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            memory: 1Gi
+        probes:
+          liveness:
+            enabled: true
+          readiness:
+            enabled: true
+          startup:
+            enabled: true
+            spec:
+              failureThreshold: 30
+              periodSeconds: 5
+
+service:
+  main:
+    controller: main
+    ports:
+      http:
+        port: *port
+
+ingress:
+  main:
+    enabled: true
+    className: traefik
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+      traefik.ingress.kubernetes.io/router.middlewares: "media-security-headers@kubernetescrd,media-auth-authentik@kubernetescrd"
+    hosts:
+      - host: "qbit.{{ requiredEnv "DOMAIN" }}"
+        paths:
+          - path: /
+            pathType: Prefix
+            service:
+              identifier: main
+              port: http
+
+persistence:
+  config:
+    enabled: true
+    storageClass: local-config
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    advancedMounts:
+      main:
+        main:
+          - path: /config
+  media:
+    enabled: true
+    existingClaim: media-data-pvc
+    advancedMounts:
+      main:
+        main:
+          - path: /data
+  # Script exécuté par Gluetun lors du port forwarding — évite les gotmpl imbriqués
+  scripts:
+    enabled: true
+    type: configMap
+    name: qbittorrent-scripts
+    defaultMode: 0755
+    advancedMounts:
+      main:
+        gluetun:
+          - path: /gluetun/scripts
+
+configMaps:
+  scripts:
+    enabled: true
+    data:
+      update-port.sh: |
+        #!/bin/sh
+        # Appelé par Gluetun avec la variable d'env PORT définie
+        set -e
+        echo "[port-sync] Nouveau port forwardé : ${PORT}"
+        wget -O- -nv --retry-connrefused \
+          --post-data "json={\"listen_port\":${PORT}}" \
+          http://127.0.0.1:8080/api/v2/app/setPreferences
+        echo "[port-sync] Port mis à jour dans qBittorrent : ${PORT}"
