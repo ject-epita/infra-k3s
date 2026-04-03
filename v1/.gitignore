@@ -1,5 +1,0 @@
-.direnv/
-.env
-.env.bak
-kubeconfig
-nas/data
