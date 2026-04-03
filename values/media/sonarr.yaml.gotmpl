@@ -8,7 +8,7 @@ controllers:
       main:
         image:
           # No official Sonarr image — linuxserver is the de-facto standard.
-          # renovate: datasource=github-releases depName=Sonarr/Sonarr
+          # renovate: datasource=docker depName=lscr.io/linuxserver/sonarr changelogUrl=https://github.com/Sonarr/Sonarr
           repository: lscr.io/linuxserver/sonarr
           tag: "4.0.14"
         ports:

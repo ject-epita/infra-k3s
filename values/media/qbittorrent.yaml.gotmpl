@@ -19,15 +19,15 @@ controllers:
     pod:
       # Gluetun nécessite NET_ADMIN pour créer le tunnel TUN
       securityContext: {}
-      dnsPolicy: None
-      dnsConfig:
-        nameservers:
-          - 127.0.0.1
-        searches:
-          - cluster.local
-        options:
-          - name: ndots
-            value: "5"
+      # dnsPolicy: None
+      # dnsConfig:
+      #   nameservers:
+      #     - 127.0.0.1
+      #   searches:
+      #     - cluster.local
+      #   options:
+      #     - name: ndots
+      #       value: "5"
 
     containers:
       # ─── 1. Gluetun (VPN gateway) ─────────────────────────────────────────────
@@ -82,7 +82,7 @@ controllers:
       # ─── 2. qBittorrent ───────────────────────────────────────────────────────
       main:
         image:
-          # renovate: datasource=github-releases depName=qbittorrent/qBittorrent
+          # renovate: datasource=docker depName=lscr.io/linuxserver/qbittorrent changelogUrl=https://github.com/qbittorrent/qBittorrent
           repository: lscr.io/linuxserver/qbittorrent
           tag: "5.0.4"
         ports:

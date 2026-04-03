@@ -69,23 +69,17 @@
     ]
   },
   "helm-values": {
-    "managerFilePatterns": [
-      "/(^|/)values/.+\\.ya?ml(\\.gotmpl)?$/"
-    ]
+    "managerFilePatterns": ["/(^|/)values/.+\\.ya?ml(\\.gotmpl)?$/"]
   },
   "kubernetes": {
-    "managerFilePatterns": [
-      "/(^|/)tests/.+\\.ya?ml(\\.gotmpl)?$/"
-    ]
+    "managerFilePatterns": ["/(^|/)tests/.+\\.ya?ml(\\.gotmpl)?$/"]
   },
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": [
-        "/(^|/)values/.+\\.ya?ml(\\.gotmpl)?$/"
-      ],
+      "managerFilePatterns": ["/(^|/)values/.+\\.ya?ml(\\.gotmpl)?$/"],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)(?: versioning=(?<versioning>.*?))?\\s+[\\s\\S]*?tag:\\s+\"(?<currentValue>.*?)\""
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)(?: versioning=(?<versioning>.*?))?(?: changelogUrl=(?<changelogUrl>.*?))?\\s+[\\s\\S]*?tag:\\s+\"(?<currentValue>.*?)\""
       ]
     }
   ]
