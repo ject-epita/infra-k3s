@@ -45,7 +45,7 @@ server:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     hosts:
-      - "authentik.{{ requiredEnv "DOMAIN" }}"
+      - "auth.{{ requiredEnv "DOMAIN" }}"
     paths:
       - /
     pathType: Prefix

@@ -20,6 +20,11 @@ resources:
         - ReadWriteMany
       persistentVolumeReclaimPolicy: Retain
       storageClassName: nfs-media-static
+      mountOptions:
+        - hard
+        - nfsvers=4.1
+        - noatime
+        - nodiratime
       nfs:
         server: {{ requiredEnv "NFS_SERVER" | quote }}
         path: {{ requiredEnv "NFS_MEDIA_PATH" | quote }}

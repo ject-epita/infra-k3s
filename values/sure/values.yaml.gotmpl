@@ -6,11 +6,11 @@ rails:
   secret:
     enabled: true
     values:
-      SECRET_KEY_BASE: {{ env "SURE_SECRET_KEY" | default "temp_secret" | quote }}
-      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: {{ env "SURE_PRIMARY_KEY" | default "temp_primary_key" | quote }}
-      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: {{ env "SURE_DETERMINISTIC_KEY" | default "temp_deterministic" | quote }}
-      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: {{ env "SURE_SALT" | default "temp_salt" | quote }}
-      redis-password: {{ env "SURE_REDIS_PASSWORD" | default "temp_redis" | quote }}
+      SECRET_KEY_BASE: {{ requiredEnv "SURE_SECRET_KEY" | quote }}
+      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: {{ requiredEnv "SURE_PRIMARY_KEY" | quote }}
+      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: {{ requiredEnv "SURE_DETERMINISTIC_KEY" | quote }}
+      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: {{ requiredEnv "SURE_SALT" | quote }}
+      redis-password: {{ requiredEnv "SURE_REDIS_PASSWORD" | quote }}
 
 ingress:
   enabled: true

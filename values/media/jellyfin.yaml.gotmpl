@@ -52,16 +52,12 @@ persistence:
     enabled: true
     type: pvc
     existingClaim: media-data-pvc
-
-# v2.7.0 doesn't have native persistence.cache, so we mount it manually.
-# Volume and Mount for the 20Gi cache (defined in storage.yaml.gotmpl).
-volumeMounts:
-  - name: cache
+  cache:
+    enabled: true
+    type: pvc
+    existingClaim: jellyfin-cache
     mountPath: /cache
-volumes:
-  - name: cache
-    persistentVolumeClaim:
-      claimName: jellyfin-cache
+
 
 # Hardware Acceleration (HWA) logic preserved but disabled as requested.
 podSecurityContext: {}
