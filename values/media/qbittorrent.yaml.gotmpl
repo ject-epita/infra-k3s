@@ -19,7 +19,15 @@ controllers:
     pod:
       # Gluetun nécessite NET_ADMIN pour créer le tunnel TUN
       securityContext: {}
-
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 127.0.0.1
+        searches:
+          - cluster.local
+        options:
+          - name: ndots
+            value: "5"
 
     containers:
       # ─── 1. Gluetun (VPN gateway) ─────────────────────────────────────────────
@@ -29,6 +37,10 @@ controllers:
           # renovate: datasource=github-releases depName=qdm12/gluetun
           repository: qmcgaw/gluetun
           tag: "v3.41.1"
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 5; (ip rule del table 51820; ip -6 rule del table 51820) || true"]
         securityContext:
           capabilities:
             add:
@@ -51,10 +63,10 @@ controllers:
                 key: PROTON_WIREGUARD_PRIVATE_KEY
         resources:
           requests:
-            cpu: 25m
-            memory: 64Mi
+            cpu: 200m
+            memory: 512Mi
           limits:
-            memory: 256Mi
+            memory: 1Gi
         # probes:
         #   liveness:
         #     enabled: true
@@ -83,8 +95,8 @@ controllers:
           WEBUI_PORT: "8080"
         resources:
           requests:
-            cpu: 50m
-            memory: 256Mi
+            cpu: 100m
+            memory: 512Mi
           limits:
             memory: 1Gi
         probes:
