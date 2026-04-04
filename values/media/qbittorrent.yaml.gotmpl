@@ -19,15 +19,15 @@ controllers:
     pod:
       # Gluetun nécessite NET_ADMIN pour créer le tunnel TUN
       securityContext: {}
-      # dnsPolicy: None
-      # dnsConfig:
-      #   nameservers:
-      #     - 127.0.0.1
-      #   searches:
-      #     - cluster.local
-      #   options:
-      #     - name: ndots
-      #       value: "5"
+      dnsPolicy: None
+      dnsConfig:
+        nameservers:
+          - 127.0.0.1
+        searches:
+          - cluster.local
+        options:
+          - name: ndots
+            value: "5"
 
     containers:
       # ─── 1. Gluetun (VPN gateway) ─────────────────────────────────────────────
@@ -66,7 +66,7 @@ controllers:
             cpu: 200m
             memory: 512Mi
           limits:
-            memory: 1Gi
+            memory: 2Gi
         # probes:
         #   liveness:
         #     enabled: true
@@ -93,22 +93,23 @@ controllers:
           PUID: "1000"
           PGID: "1000"
           WEBUI_PORT: "8080"
+          DOCKER_MODS: ghcr.io/vuetorrent/vuetorrent-lsio-mod:2.32.1
         resources:
           requests:
             cpu: 100m
             memory: 512Mi
           limits:
-            memory: 1Gi
-        probes:
-          liveness:
-            enabled: true
-          readiness:
-            enabled: true
-          startup:
-            enabled: true
-            spec:
-              failureThreshold: 30
-              periodSeconds: 5
+            memory: 2Gi
+        # probes:
+        #   liveness:
+        #     enabled: true
+        #   readiness:
+        #     enabled: true
+        #   startup:
+        #     enabled: true
+        #     spec:
+        #       failureThreshold: 30
+        #       periodSeconds: 5
 
 service:
   main:

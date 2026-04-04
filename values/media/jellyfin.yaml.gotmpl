@@ -11,7 +11,7 @@ jellyfin:
     - name: TZ
       value: "UTC"
     - name: JELLYFIN_PublishedServerUrl
-      value: "https://jellyfin.{{ requiredEnv "DOMAIN" }}"
+      value: "https://flix.{{ requiredEnv "DOMAIN" }}"
 
 ingress:
   enabled: true
@@ -20,14 +20,14 @@ ingress:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
   hosts:
-    - host: "jellyfin.{{ requiredEnv "DOMAIN" }}"
+    - host: "flix.{{ requiredEnv "DOMAIN" }}"
       paths:
         - path: /
           pathType: Prefix
   tls:
     - secretName: jellyfin-tls
       hosts:
-        - "jellyfin.{{ requiredEnv "DOMAIN" }}"
+        - "flix.{{ requiredEnv "DOMAIN" }}"
 
 # Resource requests for stable performance.
 resources:

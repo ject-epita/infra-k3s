@@ -83,3 +83,26 @@ resources:
   limits:
     cpu: 500m
     memory: 256Mi
+
+# Traefik Providers
+providers:
+  kubernetesCRD:
+    enabled: true
+    allowExternalNameServices: true # Fallback
+  kubernetesIngress:
+    enabled: true
+    allowExternalNameServices: true # Fallback
+  file:
+    directory: /etc/traefik/external/
+    watch: true
+
+# Rajout du ConfigMap externe dans le déploiement Traefik
+deployment:
+  additionalVolumes:
+    - name: external-services
+      configMap:
+        name: traefik-external-services
+  additionalVolumeMounts:
+    - name: external-services
+      mountPath: /etc/traefik/external/
+      readOnly: true

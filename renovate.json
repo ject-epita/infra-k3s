@@ -20,7 +20,6 @@
     "traefik": "https://traefik.github.io/charts",
     "jetstack": "https://charts.jetstack.io",
     "bedag": "https://bedag.github.io/helm-charts",
-    "dev-charts": "https://dalamudx.github.io/helm-charts",
     "sure": "https://we-promise.github.io/sure/"
   },
   "packageRules": [

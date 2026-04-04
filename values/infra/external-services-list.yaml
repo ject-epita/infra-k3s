@@ -1,0 +1,15 @@
+# List of external services to be reverse-proxied by Traefik.
+# - host: The subdomain (will be prefixed to .{{ requiredEnv "DOMAIN" }})
+# - destination: The destination IP address or hostname
+# - layer: 4 (TCP - TLS Passthrough) or 7 (HTTP - TLS Termination)
+# - port: The destination port
+
+services:
+- host: nas
+  destination: nas.thivillon.org
+  layer: 4
+  port: 443
+- host: mail
+  destination: mail.thivillon.org
+  layer: 4
+  port: 443

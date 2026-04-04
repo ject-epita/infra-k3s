@@ -1,0 +1,40 @@
+# Generator for Traefik File Provider ConfigMap
+# This creates a single ConfigMap named 'traefik-external-services' in the 'traefik' namespace.
+
+{{- $config := (readFile "external-services-list.yaml" | fromYaml) -}}
+
+{{- $traefikConfig := dict "http" (dict "routers" (dict) "services" (dict)) "tcp" (dict "routers" (dict) "services" (dict)) -}}
+
+{{- range $config.services }}
+  {{- $name := .host -}}
+  {{- $domain := printf "%s.%s" .host (requiredEnv "DOMAIN") -}}
+  
+  {{- if eq (int .layer) 7 }}
+    {{- /* Layer 7 - HTTP */ -}}
+    {{- $router := dict "rule" (printf "Host(`%s`)" $domain) "service" $name "entryPoints" (list "websecure") -}}
+    {{- $_ := set $router "tls" (dict "certResolver" "letsencrypt") -}}
+    {{- $_ := set $traefikConfig.http.routers $name $router -}}
+    
+    {{- $svc := dict "loadBalancer" (dict "servers" (list (dict "url" (printf "https://%s" .destination)))) -}}
+    {{- $_ := set $traefikConfig.http.services $name $svc -}}
+    
+  {{- else if eq (int .layer) 4 }}
+    {{- /* Layer 4 - TCP (TLS Passthrough) */ -}}
+    {{- $router := dict "rule" (printf "HostSNI(`%s`)" $domain) "service" $name "entryPoints" (list "websecure") -}}
+    {{- $_ := set $router "tls" (dict "passthrough" true) -}}
+    {{- $_ := set $traefikConfig.tcp.routers $name $router -}}
+    
+    {{- $svc := dict "loadBalancer" (dict "servers" (list (dict "address" (printf "%s:%d" .destination (int (default 443 .port)))))) -}}
+    {{- $_ := set $traefikConfig.tcp.services $name $svc -}}
+  {{- end }}
+{{- end }}
+
+resources:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: traefik-external-services
+      namespace: traefik
+    data:
+      services.yaml: |
+{{ $traefikConfig | toYaml | indent 8 }}

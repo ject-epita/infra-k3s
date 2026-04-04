@@ -42,7 +42,7 @@ ingress:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
     hosts:
-      - host: "seerr.{{ requiredEnv "DOMAIN" }}"
+      - host: "req.{{ requiredEnv "DOMAIN" }}"
         paths:
           - path: /
             pathType: Prefix
