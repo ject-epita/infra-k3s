@@ -10,6 +10,7 @@ resources:
         # L'embedded outpost est servi directement par le pod authentik-server (port 9000 → service port 80)
         address: "http://authentik-server.auth.svc.cluster.local/outpost.goauthentik.io/auth/traefik"
         trustForwardHeader: true
+        maxResponseBodySize: 2000000
         authResponseHeaders:
           - X-authentik-username
           - X-authentik-groups
