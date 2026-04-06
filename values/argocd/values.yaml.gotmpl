@@ -8,9 +8,13 @@ server:
     annotations:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+    # argo/argo-cd >= 9.x
+    hostname: "argo.{{ requiredEnv "DOMAIN" }}"
+    path: /
+    pathType: Prefix
 
+    # argo/argo-cd 5.x compatibility
     hosts:
-      - host: "argo.{{ requiredEnv "DOMAIN" }}"
-        paths:
-          - path: /
-            pathType: Prefix
+      - "argo.{{ requiredEnv "DOMAIN" }}"
+    paths:
+      - /
