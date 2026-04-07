@@ -61,7 +61,7 @@ server:
   # Volume pour les données d'Authentik
   volumeMounts:
     - name: authentik-data
-      mountPath: /media
+      mountPath: /data
 
   volumes:
     - name: authentik-data
@@ -82,7 +82,7 @@ worker:
 
   volumeMounts:
     - name: authentik-data
-      mountPath: /media
+      mountPath: /data
 
   volumes:
     - name: authentik-data

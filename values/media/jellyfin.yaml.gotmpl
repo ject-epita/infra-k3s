@@ -31,7 +31,7 @@ resources:
     cpu: 500m
     memory: 512Mi
   limits:
-    memory: 4Gi
+    memory: 6Gi
 
 # Kube déploie les nouvelles versions de pods en mode RollingUpdate
 # Il déploie la nouvelle version, et une fois qu'elle est healthy il supprime l'ancienne.
@@ -55,9 +55,18 @@ persistence:
     mountPath: /cache
 
 
-# Hardware Acceleration (HWA) logic preserved but disabled as requested.
-podSecurityContext: {}
-  # supplementalGroups: [993, 44]
+# Hardware Acceleration (HWA) enabled.
+podSecurityContext:
+  supplementalGroups: [993, 44]
 
-securityContext: {}
-  # privileged: true
+securityContext:
+  privileged: true
+
+volumes:
+  - name: hwa
+    hostPath:
+      path: /dev/dri
+
+volumeMounts:
+  - name: hwa
+    mountPath: /dev/dri

@@ -9,6 +9,10 @@ spec:
   selector:
     matchLabels:
       app: {{ include "trek.name" . }}
+  {{- with .Values.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   template:
     metadata:
       annotations:
@@ -44,24 +48,6 @@ spec:
                 secretKeyRef:
                   name: {{ default (printf "%s-secret" (include "trek.fullname" .)) .Values.existingSecret }}
                   key: {{ .Values.existingSecretKey | default "ENCRYPTION_KEY" }}
-                  optional: true
-            - name: ADMIN_EMAIL
-              valueFrom:
-                secretKeyRef:
-                  name: {{ default (printf "%s-secret" (include "trek.fullname" .)) .Values.existingSecret }}
-                  key: ADMIN_EMAIL
-                  optional: true
-            - name: ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ default (printf "%s-secret" (include "trek.fullname" .)) .Values.existingSecret }}
-                  key: ADMIN_PASSWORD
-                  optional: true
-            - name: OIDC_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ default (printf "%s-secret" (include "trek.fullname" .)) .Values.existingSecret }}
-                  key: OIDC_CLIENT_SECRET
                   optional: true
           volumeMounts:
             - name: data

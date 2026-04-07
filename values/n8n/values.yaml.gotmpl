@@ -5,8 +5,8 @@ controllers:
       main:
         # Change this image repository and tag to use your custom n8n image
         image:
-          repository: docker.n8n.io/n8nio/n8n
-          tag: "2.13.4"
+          repository: ghcr.io/ject-epita/n8n-no-license
+          tag: " sha256:dd5daa14ca6a3b783e8aa73b669db7d9ead01192d625813ab34921f4f16cb669 "
         env:
           WEBHOOK_URL: "https://n8n.{{ requiredEnv "DOMAIN" }}"
 

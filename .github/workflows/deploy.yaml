@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+
+permissions: {}
+
+# Prevent concurrent deploys; cancel in-progress runs on new push
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to homelab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v4
+        with:
+          ping: "deb13-k3s"
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v22
+
+      - name: Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v13
+
+      - name: Setup .env
+        run: echo "${{ secrets.DOTENV }}" > .env
+
+      - name: Fetch kubeconfig
+        run: nix develop --command ./scripts/fetch-kubeconfig.sh
+
+      - name: Deploy with helmfile
+        run: nix develop --command helmfile apply
