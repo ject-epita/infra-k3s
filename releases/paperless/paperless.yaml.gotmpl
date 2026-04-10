@@ -1,0 +1,10 @@
+bases:
+  - ../../bases/default.yaml.gotmpl
+
+releases:
+  - name: paperless
+    namespace: paperless
+    chart: ../../charts/paperless/paperless-ngx
+    values:
+      - ../../values/paperless/paperless.yaml.gotmpl
+

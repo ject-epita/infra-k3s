@@ -40,7 +40,6 @@
           stern
           velero
           python3
-          seabird
         ];
       };
     });

@@ -37,6 +37,7 @@ helmfiles:
 - path: releases/media/seerr.yaml.gotmpl
 
 - path: releases/media/qbittorrent.yaml.gotmpl
+- path: releases/paperless/paperless.yaml.gotmpl
 - path: releases/argocd/argocd.yaml.gotmpl
 
 # Layer 7 — Trek namespace
