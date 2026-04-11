@@ -1,0 +1,24 @@
+bases:
+  - ../../bases/default.yaml.gotmpl
+
+releases:
+  - name: immich-storage
+    namespace: immich
+    chart: bedag/raw
+    version: "2.0.2"
+    values:
+      - ../../values/immich/storage.yaml.gotmpl
+
+  - name: immich-db
+    namespace: immich
+    chart: cnpg/cluster
+    version: "0.6.0"
+    values:
+      - ../../values/immich/immich-db.yaml.gotmpl
+
+  - name: immich
+    namespace: immich
+    chart: immich/immich
+    version: "0.11.1"
+    values:
+      - ../../values/immich/values.yaml.gotmpl

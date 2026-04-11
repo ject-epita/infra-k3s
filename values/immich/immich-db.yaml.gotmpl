@@ -1,0 +1,38 @@
+mode: standalone
+type: postgresql
+
+cluster:
+  instances: 1
+
+  # PostgreSQL avec support pgvector — requis par Immich depuis v1.106+
+  # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
+  imageName: "ghcr.io/tensorchord/cloudnative-vectorchord:pg16-v0.4.3"
+
+  postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
+
+  storage:
+    size: 10Gi
+    storageClass: local-config
+
+  # Optimisations critiques pour Single-Node k3s
+  # topologyKey vide désactive les contraintes d'anti-affinité (nœud unique)
+  enablePDB: false
+  affinity:
+    topologyKey: ""
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+
+  # Initialisation de la BDD avec les extensions vecteur nécessaires à Immich
+  initdb:
+    database: immich
+    owner: immich
+    secret:
+      name: immich-db-secret
+    postInitSQL:
+      - CREATE EXTENSION IF NOT EXISTS "vector" CASCADE;
+      - CREATE EXTENSION IF NOT EXISTS "vectorchord" CASCADE;
+
+backups:
+  enabled: false
