@@ -1,7 +1,7 @@
 ---
 services:
   garage:
-    image: dxflrs/garage:v2.2.0 # Target a stable version
+    image: dxflrs/garage:v2.3.0 # Target a stable version
     container_name: garage
     restart: unless-stopped
     # Depending on Synology setup, host network is often easier to expose the 3900 port to the NUC
