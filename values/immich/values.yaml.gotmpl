@@ -8,7 +8,7 @@ controllers:
       main:
         image:
           # renovate: datasource=github-releases depName=immich-app/immich
-          tag: "v2.7.4"
+          tag: "v2.7.5"
         env:
           # Connexion à la base de données PostgreSQL (CNPG)
           DB_HOSTNAME: "immich-db-16-cluster-rw.immich.svc.cluster.local"
@@ -80,8 +80,9 @@ machine-learning:
       containers:
         main:
           image:
+            # renovate: datasource=github-releases depName=immich-app/immich
             repository: ghcr.io/immich-app/immich-machine-learning
-            tag: "v2.7.4-openvino"
+            tag: "v2.7.5-openvino"
           resources:
             requests:
               cpu: 100m
