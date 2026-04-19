@@ -1,49 +1,49 @@
 bases:
-  - bases/default.yaml.gotmpl
+- bases/default.yaml.gotmpl
 ---
 helmfiles:
-  # Layer 1 — Operators et infra transverse
-  - path: releases/infra/cert-manager.yaml.gotmpl
-  - path: releases/infra/local-config-storageclass.yaml.gotmpl
-  - path: releases/infra/cnpg.yaml.gotmpl
-  - path: releases/infra/traefik.yaml.gotmpl
-  - path: releases/infra/external-services.yaml.gotmpl
-  - path: releases/infra/velero.yaml.gotmpl
+# Layer 1 — Operators et infra transverse
+- path: releases/infra/cert-manager.yaml.gotmpl
+- path: releases/infra/local-config-storageclass.yaml.gotmpl
+- path: releases/infra/cnpg.yaml.gotmpl
+- path: releases/infra/traefik.yaml.gotmpl
+- path: releases/infra/external-services.yaml.gotmpl
+- path: releases/infra/velero.yaml.gotmpl
 
-  # Layer 2 — Auth namespace
-  - path: releases/auth/secrets.yaml.gotmpl
-  - path: releases/auth/authentik-db-16.yaml.gotmpl
-  - path: releases/auth/authentik.yaml.gotmpl
+# Layer 2 — Auth namespace
+- path: releases/auth/secrets.yaml.gotmpl
+- path: releases/auth/authentik-db-16.yaml.gotmpl
+- path: releases/auth/authentik.yaml.gotmpl
 
-  # Layer 3 — Sure namespace
-  # - path: releases/sure/sure.yaml.gotmpl
+# Layer 3 — Sure namespace
+# - path: releases/sure/sure.yaml.gotmpl
 
-  # Layer 4 — n8n namespace
-  - path: releases/n8n/n8n.yaml.gotmpl
+# Layer 4 — n8n namespace
+- path: releases/n8n/n8n.yaml.gotmpl
 
-  # Layer 5 — Vaultwarden namespace
-  - path: releases/vaultwarden/vaultwarden.yaml.gotmpl
+# Layer 5 — Vaultwarden namespace
+- path: releases/vaultwarden/vaultwarden.yaml.gotmpl
 
-  # Layer 6 — Media namespace
-  - path: releases/media/secrets.yaml.gotmpl
-  - path: releases/media/storage.yaml.gotmpl
-  - path: releases/media/middlewares.yaml.gotmpl
-  - path: releases/media/jellyfin.yaml.gotmpl
+# Layer 6 — Media namespace
+- path: releases/media/secrets.yaml.gotmpl
+- path: releases/media/storage.yaml.gotmpl
+- path: releases/media/middlewares.yaml.gotmpl
+- path: releases/media/jellyfin.yaml.gotmpl
 
-  - path: releases/media/prowlarr.yaml.gotmpl
-  - path: releases/media/sonarr.yaml.gotmpl
-  - path: releases/media/radarr.yaml.gotmpl
-  - path: releases/media/seerr.yaml.gotmpl
+- path: releases/media/prowlarr.yaml.gotmpl
+- path: releases/media/sonarr.yaml.gotmpl
+- path: releases/media/radarr.yaml.gotmpl
+- path: releases/media/seerr.yaml.gotmpl
 
-  - path: releases/media/qbittorrent.yaml.gotmpl
-  - path: releases/paperless/paperless.yaml.gotmpl
-  - path: releases/argocd/argocd.yaml.gotmpl
+- path: releases/media/qbittorrent.yaml.gotmpl
+- path: releases/paperless/paperless.yaml.gotmpl
+- path: releases/argocd/argocd.yaml.gotmpl
 
-  # Layer 7 — Trek namespace
-  - path: releases/trek/secrets.yaml.gotmpl
-  - path: releases/trek/trek.yaml.gotmpl
+# Layer 7 — Trek namespace
+- path: releases/trek/secrets.yaml.gotmpl
+- path: releases/trek/trek.yaml.gotmpl
 
-  # Layer 8 — Immich namespace
-  - path: releases/immich/secrets.yaml.gotmpl
-  - path: releases/immich/immich-db-16.yaml.gotmpl
-  - path: releases/immich/immich.yaml.gotmpl
+# Layer 8 — Immich namespace
+- path: releases/immich/secrets.yaml.gotmpl
+- path: releases/immich/immich-db-16.yaml.gotmpl
+- path: releases/immich/immich.yaml.gotmpl
