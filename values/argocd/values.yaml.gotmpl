@@ -6,14 +6,12 @@ configs:
     server.insecure: true
 
 server:
-  service:
-    annotations:
-      traefik.ingress.kubernetes.io/service.serversscheme: "h2c"
-
   ingress:
     enabled: true
     ingressClassName: traefik
-    https: false
     annotations:
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+    extraTls:
+      - hosts:
+        - "argo.{{ requiredEnv "DOMAIN" }}"
