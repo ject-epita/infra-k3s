@@ -8,6 +8,7 @@ replication_factor = 1
 # RPC interface definition
 rpc_bind_addr = "[::]:3901"
 rpc_public_addr = "127.0.0.1:3901"
+rpc_secret = "<RPC_SECRET>"
 
 # The RPC secret will be retrieved dynamically from the GARAGE_RPC_SECRET environment variable
 # rpc_secret = "..."
@@ -16,3 +17,8 @@ rpc_public_addr = "127.0.0.1:3901"
 s3_region = "garage"
 api_bind_addr = "[::]:3900"
 root_domain = ".s3.thivillon.org"
+
+[admin] # Required
+api_bind_addr = "[::]:3903"
+admin_token = "YOUR_ADMIN_TOKEN_HERE"
+metrics_token = "YOUR_METRICS_TOKEN_HERE"
