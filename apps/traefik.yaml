@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+spec:
+  project: default
+  sources:
+  - repoURL: 'https://helm.traefik.io/traefik'
+    chart: traefik
+    targetRevision: 39.0.8
+    helm:
+      valueFiles:
+      - $values/apps/traefik/values.yaml
+  - repoURL: 'https://github.com/kernelb00t/titicloud.git'
+    targetRevision: HEAD
+    ref: values
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: traefik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

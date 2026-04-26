@@ -6,7 +6,6 @@ helmfiles:
 - path: releases/infra/cert-manager.yaml.gotmpl
 - path: releases/infra/local-config-storageclass.yaml.gotmpl
 - path: releases/infra/cnpg.yaml.gotmpl
-- path: releases/infra/traefik.yaml.gotmpl
 - path: releases/infra/external-services.yaml.gotmpl
 - path: releases/infra/velero.yaml.gotmpl
 - path: releases/infra/nfd.yaml.gotmpl
