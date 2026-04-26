@@ -1,17 +1,18 @@
-global:
-  domain: "argo.thivillon.org"
+argo-cd:
+  global:
+    domain: "argo.thivillon.org"
 
-configs:
-  params:
-    server.insecure: true
+  configs:
+    params:
+      server.insecure: true
 
-server:
-  ingress:
-    enabled: true
-    ingressClassName: traefik
-    annotations:
-      traefik.ingress.kubernetes.io/router.tls: "true"
-      traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
-    extraTls:
-    - hosts:
-      - "argo.thivillon.org"
+  server:
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+      extraTls:
+      - hosts:
+        - "argo.thivillon.org"
