@@ -58,12 +58,9 @@ podSecurityContext:
   fsGroupChangePolicy: "OnRootMismatch"
 
 # On ajoute le token API en variable d'environnement pour le conteneur Traefik
-env:
-- name: CF_DNS_API_TOKEN
-  valueFrom:
-    secretKeyRef:
-      name: cloudflare-token-secret
-      key: CF_DNS_API_TOKEN
+envFrom:
+- secretRef:
+    name: cloudflare-token-secret
 
 # On met à jour le résolveur
 certificatesResolvers:
