@@ -22,7 +22,4 @@ helmfiles:
 
 
 
-# Layer 8 — Immich namespace
-- path: releases/immich/secrets.yaml.gotmpl
-- path: releases/immich/immich-db-16.yaml.gotmpl
-- path: releases/immich/immich.yaml.gotmpl
+

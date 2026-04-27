@@ -1,0 +1,119 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: immich
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://immich-app.github.io/immich-charts'
+    chart: immich
+    targetRevision: 0.11.1
+    helm:
+      values: |
+        controllers:
+          main:
+            containers:
+              main:
+                image:
+                  tag: "v2.7.5"
+                env:
+                  IMMICH_HOST: "0.0.0.0"
+                  DB_HOSTNAME: "immich-db-16-cluster-rw.immich.svc.cluster.local"
+                  DB_DATABASE_NAME: "immich"
+                  DB_USERNAME: "immich"
+                  DB_PASSWORD:
+                    valueFrom:
+                      secretKeyRef:
+                        name: immich-db-secret
+                        key: password
+
+        immich:
+          persistence:
+            library:
+              existingClaim: immich-library-pvc
+
+        valkey:
+          enabled: true
+          persistence:
+            data:
+              type: emptyDir
+
+        server:
+          enabled: true
+          controllers:
+            main:
+              strategy: Recreate
+              containers:
+                main:
+                  securityContext: {}
+                  resources:
+                    requests:
+                      cpu: 100m
+                      memory: 512Mi
+                      gpu.intel.com/i915: 1
+                    limits:
+                      memory: 8Gi
+                      gpu.intel.com/i915: 1
+          ingress:
+            main:
+              enabled: true
+              className: traefik
+              annotations:
+                traefik.ingress.kubernetes.io/router.tls: "true"
+                traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+              hosts:
+                - host: "photo.thivillon.org"
+                  paths:
+                    - path: /
+                      service:
+                        identifier: main
+                        port: http
+
+        microservices:
+          enabled: true
+          controllers:
+            main:
+              containers:
+                main:
+                  securityContext: {}
+                  resources:
+                    requests:
+                      gpu.intel.com/i915: 1
+                    limits:
+                      gpu.intel.com/i915: 1
+
+        machine-learning:
+          enabled: true
+          controllers:
+            main:
+              containers:
+                main:
+                  securityContext: {}
+                  image:
+                    repository: ghcr.io/immich-app/immich-machine-learning
+                    tag: "v2.7.5-openvino"
+                  resources:
+                    requests:
+                      cpu: 1000m
+                      memory: 512Mi
+                      gpu.intel.com/i915: 1
+                    limits:
+                      memory: 12Gi
+                      gpu.intel.com/i915: 1
+          persistence:
+            cache:
+              enabled: true
+              type: persistentVolumeClaim
+              existingClaim: immich-ml-cache
+              accessMode: ReadWriteOnce
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: immich
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

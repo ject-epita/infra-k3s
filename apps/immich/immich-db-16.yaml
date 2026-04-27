@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: immich-db-16
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://cloudnative-pg.github.io/charts'
+    chart: cluster
+    targetRevision: 0.6.0
+    helm:
+      values: |
+        mode: standalone
+        type: postgresql
+        
+        cluster:
+          instances: 1
+          imageName: "ghcr.io/tensorchord/cloudnative-vectorchord:16-0.4.3"
+          
+          postgresql:
+            shared_preload_libraries:
+              - "vchord.so"
+              
+          storage:
+            size: 10Gi
+            storageClass: local-config
+            
+          enablePDB: false
+          affinity:
+            topologyKey: ""
+            
+          primaryUpdateStrategy: unsupervised
+          primaryUpdateMethod: switchover
+          
+          initdb:
+            database: immich
+            owner: immich
+            secret:
+              name: immich-db-secret
+            postInitApplicationSQL:
+              - CREATE EXTENSION IF NOT EXISTS "vchord" CASCADE;
+              - CREATE EXTENSION IF NOT EXISTS "cube" CASCADE;
+              - CREATE EXTENSION IF NOT EXISTS "earthdistance" CASCADE;
+              
+        backups:
+          enabled: false
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: immich
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
