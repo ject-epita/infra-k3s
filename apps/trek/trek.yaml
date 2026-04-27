@@ -55,13 +55,13 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: trek
-  # syncPolicy:
-  #   automated:
-  #     prune: true
-  #     selfHeal: true
-  #   syncOptions:
-  #   - CreateNamespace=true
-  #   - ServerSideApply=true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
   ignoreDifferences:
   - kind: PersistentVolumeClaim
     jsonPointers:
