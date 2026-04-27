@@ -16,6 +16,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+    syncOptions:
+    - ServerSideApply=true
   ignoreDifferences:
     - group: ""
       kind: PersistentVolumeClaim
