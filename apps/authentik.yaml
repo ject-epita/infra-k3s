@@ -30,7 +30,7 @@ spec:
             enabled: true
             
           postgresql:
-            host: "authentik-db-16-rw"
+            host: "authentik-db-16-cluster-rw"
             name: "authentik"
             user: "authentik"
             

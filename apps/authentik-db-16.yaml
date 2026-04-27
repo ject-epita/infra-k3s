@@ -1,7 +1,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: authentik-db-16
+  name: authentik-db-16-cluster
   namespace: auth
 spec:
   instances: 1
@@ -34,12 +34,12 @@ spec:
       #   source:
       #     externalCluster: authentik-db-16
 
-      # externalClusters:
-      #   - name: authentik-db-16
-      #     connectionParameters:
-      #       host: authentik-db-16-rw.auth.svc.cluster.local
-      #       user: postgres
-      #       dbname: postgres
-      #     password:
-      #       name: authentik-db-secret
-      #       key: password
+  # externalClusters:
+  #   - name: authentik-db-16
+  #     connectionParameters:
+  #       host: authentik-db-16-rw.auth.svc.cluster.local
+  #       user: postgres
+  #       dbname: postgres
+  #     password:
+  #       name: authentik-db-secret
+  #       key: password
