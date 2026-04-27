@@ -61,22 +61,10 @@
       "commitMessagePrefix": "chore(actions):"
     }
   ],
-  "helmfile": {
-    "managerFilePatterns": [
-      "/(^|/)helmfile\\.ya?ml(\\.gotmpl)?$/",
-      "/(^|/)releases/.+\\.ya?ml(\\.gotmpl)?$/"
-    ]
-  },
-  "helm-values": {
-    "managerFilePatterns": ["/(^|/)values/.+\\.ya?ml(\\.gotmpl)?$/"]
-  },
-  "kubernetes": {
-    "managerFilePatterns": ["/(^|/)tests/.+\\.ya?ml(\\.gotmpl)?$/"]
-  },
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/(^|/)values/.+\\.ya?ml(\\.gotmpl)?$/"],
+      "managerFilePatterns": ["/(^|/)apps/.+\\.ya?ml$"],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)(?: versioning=(?<versioning>.*?))?(?: changelogUrl=(?<changelogUrl>.*?))?\\s+[\\s\\S]*?tag:\\s+\"(?<currentValue>.*?)\""
       ]

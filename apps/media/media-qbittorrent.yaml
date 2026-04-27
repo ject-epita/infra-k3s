@@ -43,6 +43,7 @@ spec:
               gluetun:
                 image:
                   repository: qmcgaw/gluetun
+                  # renovate: datasource=docker depName=qmcgaw/gluetun
                   tag: "v3.41.1"
                 lifecycle:
                   postStart:

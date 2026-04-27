@@ -16,6 +16,7 @@ spec:
             containers:
               main:
                 image:
+                  # renovate: datasource=docker depName=ghcr.io/immich-app/immich-server
                   tag: "v2.7.5"
                 env:
                   IMMICH_HOST: "0.0.0.0"
@@ -92,6 +93,7 @@ spec:
                   securityContext: {}
                   image:
                     repository: ghcr.io/immich-app/immich-machine-learning
+                    # renovate: datasource=docker depName=ghcr.io/immich-app/immich-machine-learning
                     tag: "v2.7.5-openvino"
                   resources:
                     requests:

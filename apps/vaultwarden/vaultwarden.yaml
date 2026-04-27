@@ -18,6 +18,7 @@ spec:
               app:
                 image:
                   repository: ghcr.io/dani-garcia/vaultwarden
+                  # renovate: datasource=docker depName=ghcr.io/dani-garcia/vaultwarden
                   tag: "1.35.7"
                 env:
                   DOMAIN: "https://vault.thivillon.org"

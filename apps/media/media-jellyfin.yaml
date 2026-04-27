@@ -13,6 +13,7 @@ spec:
       values: |
         image:
           repository: docker.io/jellyfin/jellyfin
+          # renovate: datasource=docker depName=jellyfin/jellyfin
           tag: "10.11.8"
 
         jellyfin:
