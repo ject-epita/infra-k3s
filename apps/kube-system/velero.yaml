@@ -22,9 +22,9 @@ spec:
               provider: aws
               bucket: "velero-backups"
               config:
-                region: garage
+                region: auto
                 s3ForcePathStyle: true
-                s3Url: "http://100.114.35.5:3900"
+                s3Url: "https://55284c6b3c405233105a9c4ce7d19370.eu.r2.cloudflarestorage.com/velero-backups"
           uploaderType: kopia
           defaultVolumesToFsBackup: true
         initContainers:
