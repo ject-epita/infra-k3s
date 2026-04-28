@@ -101,11 +101,6 @@ spec:
         - "--providers.file.filename=/etc/traefik/external/services.yaml"
         - "--providers.file.watch=true"
         - "--providers.kubernetesingress.ingressendpoint.ip=100.68.81.91"
-        # Montage du ConfigMap externe via le helper "volumes" du chart
-        volumes:
-        - name: traefik-external-services
-          mountPath: "/etc/traefik/external/"
-          type: configMap
 
   destination:
     server: 'https://kubernetes.default.svc'
