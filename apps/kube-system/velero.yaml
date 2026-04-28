@@ -35,6 +35,20 @@ spec:
               - mountPath: /target
                 name: plugins
         deployNodeAgent: true
+        schedules:
+          daily-backup:
+            disabled: false
+            schedule: "0 2 * * *"
+            template:
+              ttl: "720h"
+              storageLocation: default
+              excludedNamespaces:
+                - kube-system
+                - kube-public
+                - kube-node-lease
+                - argocd
+                - cert-manager
+                - traefik
         resources:
           requests:
             cpu: 100m
