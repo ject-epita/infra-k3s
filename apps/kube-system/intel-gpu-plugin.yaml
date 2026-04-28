@@ -1,7 +1,0 @@
-apiVersion: deviceplugin.intel.com/v1
-kind: GpuDevicePlugin
-metadata:
-  name: gpu-plugin
-  namespace: intel-device-plugins-system
-spec:
-  sharedDevNum: 5

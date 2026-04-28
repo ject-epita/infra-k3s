@@ -70,25 +70,14 @@ spec:
           fsGroup: 65532
           fsGroupChangePolicy: "OnRootMismatch"
 
-        # On ajoute le token API en variable d'environnement pour le conteneur Traefik
-        envFrom:
-        - secretRef:
-            name: cloudflare-token-secret
         # On met à jour le résolveur
         certificatesResolvers:
           letsencrypt:
             acme:
               email: "nope@ject.fr"
               storage: /data/acme.json
-              dnsChallenge:
-                provider: cloudflare
-                # Cloudflare a parfois besoin d'un peu de temps pour propager le TXT
-                delayBeforeCheck: 10
-                resolvers:
-                - "1.1.1.1"
-                - "1.0.0.1"
-                - "2606:4700:4700::1111"
-                - "2606:4700:4700::1001"
+              httpChallenge:
+                entryPoint: web
 
         resources:
           requests:
