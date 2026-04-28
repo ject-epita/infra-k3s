@@ -40,14 +40,18 @@ nano /etc/rancher/k3s/config.yaml
 ```bash
 curl -sfL https://get.k3s.io | sh -
 ```
-8. Installer argo-cd
+8. Installer argo-cd via Helm
 
 ```bash
+# Ajouter le repo Helm ArgoCD
+helm repo add argo https://argoproj.github.io/argo-helm
+helm repo update
+
 # Créer le namespace
 kubectl create namespace argocd
 
-# Installer ArgoCD (dernière version stable)
-kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+# Installer ArgoCD
+helm install argocd argo/argo-cd --namespace argocd
 
 # Attendre que tout soit prêt
 kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server -n argocd --timeout=300s
