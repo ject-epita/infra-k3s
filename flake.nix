@@ -1,5 +1,5 @@
 {
-  description = "Thivillon homelab environment";
+  description = "JECT infrastructure environment";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";

@@ -78,7 +78,7 @@ spec:
         certificatesResolvers:
           letsencrypt:
             acme:
-              email: "nope@thivillon.org"
+              email: "nope@ject.fr"
               storage: /data/acme.json
               dnsChallenge:
                 provider: cloudflare

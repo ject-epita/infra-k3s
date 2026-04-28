@@ -12,7 +12,7 @@ spec:
     helm:
       values: |
         global:
-          domain: "argo.thivillon.org"
+          domain: "argo.ject.fr"
         configs:
           params:
             server.insecure: true
@@ -25,7 +25,7 @@ spec:
               traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
             extraTls:
             - hosts:
-              - "argo.thivillon.org"
+              - "argo.ject.fr"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: argocd

@@ -21,7 +21,7 @@ spec:
                   # L'image utilise un digest sha256 fixe
                   digest: "sha256:dd5daa14ca6a3b783e8aa73b669db7d9ead01192d625813ab34921f4f16cb669"
                 env:
-                  WEBHOOK_URL: "https://n8n.thivillon.org"
+                  WEBHOOK_URL: "https://n8n.ject.fr"
 
         service:
           main:
@@ -38,7 +38,7 @@ spec:
               traefik.ingress.kubernetes.io/router.tls: "true"
               traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
             hosts:
-              - host: "n8n.thivillon.org"
+              - host: "n8n.ject.fr"
                 paths:
                   - path: /
                     pathType: Prefix

@@ -31,7 +31,7 @@
       ],
       "draftPR": true,
       "prBodyNotes": [
-        "⚠️ **MAJOR DATABASE UPGRADE** ⚠️\n\nPlease read the upgrade guide before merging this PR: [docs/database-major-version-upgrade.md](docs/database-major-version-upgrade.md)"
+        "⚠️ **MAJOR DATABASE UPGRADE** ⚠️\n\nPlease read the official CNPG upgrade guides before merging this PR"
       ],
       "labels": ["major-db-upgrade"]
     },
