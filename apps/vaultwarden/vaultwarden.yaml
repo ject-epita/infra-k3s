@@ -41,7 +41,26 @@ spec:
                         key: password
                   - name: DATABASE_URL
                     value: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)"
-                # On charge le token d'admin depuis le SealedSecret
+                  - name: PUSH_ENABLED
+                    value: "true"
+                  - name: PUSH_RELAY_URI
+                    value: "https://api.bitwarden.eu"
+                  - name: PUSH_IDENTITY_URI
+                    value: "https://identity.bitwarden.eu"
+                  - name: SIGNUPS_DOMAINS_WHITELIST
+                    value: "ject.fr"
+                  - name: INVITATION_ORG_NAME
+                    value: "JECT Vault"
+                  - name: EMAIL_CHANGE_ALLOWED
+                    value: "false"
+                  - name: SMTP_HOST
+                    value: "smtp.gmail.com"
+                  - name: SMTP_FROM_NAME
+                    value: "JECT Vault"
+                  - name: SMTP_SECURITY
+                    value: "force_tls"
+                  - name: SMTP_PORT
+                    value: "465"
                 envFrom:
                   - secretRef:
                       name: vaultwarden-secret
