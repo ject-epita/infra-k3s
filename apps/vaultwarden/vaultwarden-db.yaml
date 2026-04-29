@@ -31,6 +31,10 @@ spec:
   bootstrap:
     recovery:
       source: clusterBackup
+      database: vaultwarden
+      owner: vaultwarden
+      secret:
+        name: vaultwarden-db-app
   externalClusters:
   - name: clusterBackup
     plugin:
