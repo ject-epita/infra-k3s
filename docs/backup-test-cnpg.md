@@ -1,15 +1,16 @@
 # Procédure de Test de Restauration GitOps (CloudNativePG & R2)
 
-Ce document décrit la méthode pour tester la restauration d'une base de données gérée par CloudNativePG depuis les sauvegardes distantes (ex: Cloudflare R2).
+Ce document décrit la méthode pour tester la restauration d'une base de données CloudNativePG depuis Cloudflare R2.
 
 ## Prérequis
-La configuration de restauration (`bootstrap.recovery`) doit être à jour et **validée / poussée** dans votre dépôt Git central.
+Avoir les variables de restauration (`bootstrap.recovery`) prêtes dans le manifest de votre base de données (ex: `vaultwarden-db.yaml`).
 
-## Étapes de Restauration
+---
+
+## Phase 1 : Préparation et Nettoyage
 
 ### 1. Désactiver le Self-Heal d'ArgoCD
-Modifiez les paramètres de synchronisation de l'application ArgoCD concernée afin de suspendre la réconciliation immédiate :
-
+Modifiez le fichier YAML de votre application ArgoCD (`apps/vaultwarden/vaultwarden.yaml`) :
 ```diff
   syncPolicy:
     automated:
@@ -17,28 +18,36 @@ Modifiez les paramètres de synchronisation de l'application ArgoCD concernée a
 -     selfHeal: true
 +     selfHeal: false
 ```
+*Poussez sur Git pour désactiver la réconciliation auto.*
 
-*Commitez et poussez cette modification dans votre dépôt Git.*
-
-### 2. Isoler la charge applicative
-Fermez les sessions et les accès en cours sur la base de données :
+### 2. Couper l'application & Détruire le cluster
 ```bash
-kubectl scale deployment <app-name> --replicas=0 -n <namespace>
+kubectl scale deployment vaultwarden --replicas=0 -n vaultwarden
+kubectl delete cluster vaultwarden-db -n vaultwarden
+kubectl delete pvc -n vaultwarden -l cnpg.io/cluster=vaultwarden-db
 ```
 
-### 3. Purger l'état local
-Supprimez le cluster existant ainsi que ses disques persistants pour forcer la reconstruction complète :
-```bash
-kubectl delete cluster <cluster-name> -n <namespace>
-kubectl delete pvc -n <namespace> -l cnpg.io/cluster=<cluster-name>
-```
+---
 
-### 4. Déclencher la restauration
-Poussez la configuration intégrant `bootstrap.recovery` sur Git, puis rétablissez le paramètre `selfHeal: true` sur l'application.
+## Phase 2 : Bascule en mode Restauration
 
-ArgoCD détectera la divergence et déclenchera de lui-même :
-- La création du nouveau cluster PostgreSQL configuré pour récupérer le dump.
-- La création et la montée en charge (scaling) automatique de vos pods applicatifs une fois l'infrastructure disponible.
+### 3. Configurer la Restauration dans Git
+Dans le manifest du cluster (`vaultwarden-db.yaml`) :
+1. **Activer** le bloc `bootstrap.recovery` et `externalClusters`.
+2. **Commenter** le bloc `plugins:` (l'archiveur WAL R2) pour éviter les conflits d'écriture.
 
-## Suivi
-La progression globale ainsi que l'état de santé des ressources peuvent être suivis directement depuis la **WebUI ArgoCD**.
+### 4. Déclencher la récupération
+Remettez `selfHeal: true` dans le fichier YAML et effectuez un Sync. ArgoCD va :
+- Reconstruire le cluster et rejouer les données distantes.
+- Attendez le statut `Cluster in healthy state`.
+
+---
+
+## Phase 3 : Retour en Production
+
+Pour que le cluster continue d'archiver la base de données :
+1. **Commenter** `bootstrap.recovery` et `externalClusters`.
+2. **Activer** `bootstrap.initdb` (crucial pour fixer le nom d'utilisateur à `vaultwarden`).
+3. **Activer** le bloc `plugins:` (WAL archiving).
+
+*Poussez sur Git pour finaliser.*
