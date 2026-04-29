@@ -33,11 +33,11 @@ kubectl delete pvc -n vaultwarden -l cnpg.io/cluster=vaultwarden-db
 
 ### 3. Configurer la Restauration dans Git
 Dans le manifest du cluster (`vaultwarden-db.yaml`) :
-1. **Activer** le bloc `bootstrap.recovery` et `externalClusters`.
-2. **Commenter** le bloc `plugins:` (l'archiveur WAL R2) pour éviter les conflits d'écriture.
+1. **Activer** les blocs `bootstrap.recovery` et `externalClusters` (blocs marqués avec `Restore mode`).
+2. **Commenter** le bloc `plugins:` (l'archiveur WAL R2) pour éviter les conflits d'écriture (les blocs marqués avec `Production mode`).
 
 ### 4. Déclencher la récupération
-Remettez `selfHeal: true` dans le fichier YAML et effectuez un Sync. ArgoCD va :
+Remettez `selfHeal: true` dans le fichier YAML et pushez les modifs. ArgoCD va :
 - Reconstruire le cluster et rejouer les données distantes.
 - Attendez le statut `Cluster in healthy state`.
 
