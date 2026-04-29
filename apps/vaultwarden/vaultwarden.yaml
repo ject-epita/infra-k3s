@@ -23,6 +23,19 @@ spec:
                 env:
                   DOMAIN: "https://vault.ject.fr"
                   SIGNUPS_ALLOWED: "false"
+                  DB_HOST: "vaultwarden-db-rw"
+                  DB_NAME: "vaultwarden"
+                  DB_USER:
+                    valueFrom:
+                      secretKeyRef:
+                        name: vaultwarden-db-app
+                        key: username
+                  DB_PASSWORD:
+                    valueFrom:
+                      secretKeyRef:
+                        name: vaultwarden-db-app
+                        key: password
+                  DATABASE_URL: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)"
                 # On charge le token d'admin depuis le SealedSecret
                 envFrom:
                   - secretRef:
