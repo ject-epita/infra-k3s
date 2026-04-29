@@ -22,7 +22,7 @@ spec:
                   tag: "1.35.8"
                 env:
                   - name: DOMAIN
-                    value: "https://vault.test.ject.fr"
+                    value: "https://vault-test.ject.fr"
                   - name: SIGNUPS_ALLOWED
                     value: "true"
                   - name: DB_HOST
@@ -77,7 +77,7 @@ spec:
               traefik.ingress.kubernetes.io/router.tls: "true"
               traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
             hosts:
-              - host: "vault.test.ject.fr"
+              - host: "vault-test.ject.fr"
                 paths:
                   - path: /
                     pathType: Prefix
