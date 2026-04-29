@@ -28,21 +28,24 @@ spec:
   enablePDB: false
   storage:
     size: 1Gi
-  bootstrap:
-    recovery:
-      source: clusterBackup
-      database: vaultwarden
-      owner: vaultwarden
-  externalClusters:
-  - name: clusterBackup
-    plugin:
-      name: barman-cloud.cloudnative-pg.io
-      parameters:
-        barmanObjectName: r2-backup-store
-        serverName: vaultwarden-db
-  # plugins:
-  # - name: barman-cloud.cloudnative-pg.io
-  #   enabled: true
-  #   isWALArchiver: true
-  #   parameters:
-  #     barmanObjectName: r2-backup-store
+    # ---- Restore mode (do not stay in that mode) :
+    # bootstrap:
+    #   recovery:
+    #     source: clusterBackup
+    #     database: vaultwarden
+    #     owner: vaultwarden
+    # externalClusters:
+    # - name: clusterBackup
+    #   plugin:
+    #     name: barman-cloud.cloudnative-pg.io
+    #     parameters:
+    #       barmanObjectName: r2-backup-store
+    #       serverName: vaultwarden-db
+
+    # ---- Backup mode (production) :
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    enabled: true
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: r2-backup-store
