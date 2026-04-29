@@ -18,6 +18,7 @@ spec:
             server.insecure: true
           cm:
             url: "https://argo.ject.fr"
+            webhook.github.secret: $argocd-webhook-secret:webhook-secret
             dex.config: |
               connectors:
                 - type: oidc
