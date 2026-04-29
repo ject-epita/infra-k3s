@@ -43,9 +43,9 @@ spec:
     #       serverName: vaultwarden-db
 
     # ---- Backup mode (production) :
-  plugins:
-  - name: barman-cloud.cloudnative-pg.io
-    enabled: true
-    isWALArchiver: true
-    parameters:
-      barmanObjectName: r2-backup-store
+    # plugins:
+    # - name: barman-cloud.cloudnative-pg.io
+    #   enabled: true
+    #   isWALArchiver: true
+    #   parameters:
+    #     barmanObjectName: r2-backup-store
