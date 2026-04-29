@@ -21,21 +21,26 @@ spec:
                   # renovate: datasource=docker depName=ghcr.io/dani-garcia/vaultwarden
                   tag: "1.35.8"
                 env:
-                  DOMAIN: "https://vault.ject.fr"
-                  SIGNUPS_ALLOWED: "false"
-                  DB_HOST: "vaultwarden-db-rw"
-                  DB_NAME: "vaultwarden"
-                  DB_USER:
+                  - name: DOMAIN
+                    value: "https://vault.ject.fr"
+                  - name: SIGNUPS_ALLOWED
+                    value: "false"
+                  - name: DB_HOST
+                    value: "vaultwarden-db-rw"
+                  - name: DB_NAME
+                    value: "vaultwarden"
+                  - name: DB_USER
                     valueFrom:
                       secretKeyRef:
                         name: vaultwarden-db-app
                         key: username
-                  DB_PASSWORD:
+                  - name: DB_PASSWORD
                     valueFrom:
                       secretKeyRef:
                         name: vaultwarden-db-app
                         key: password
-                  DATABASE_URL: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)"
+                  - name: DATABASE_URL
+                    value: "postgresql://$(DB_USER):$(DB_PASSWORD)@$(DB_HOST):5432/$(DB_NAME)"
                 # On charge le token d'admin depuis le SealedSecret
                 envFrom:
                   - secretRef:
