@@ -10,7 +10,7 @@ Avoir les variables de restauration (`bootstrap.recovery`) prêtes dans le manif
 ## Phase 1 : Préparation et Nettoyage
 
 ### 1. Désactiver le Self-Heal d'ArgoCD
-Modifiez le fichier YAML de votre application ArgoCD (`apps/vaultwarden/vaultwarden.yaml`) :
+Modifiez le fichier YAML de votre application ArgoCD (`apps/vaultwarden/vaultwarden.yaml` et la root app) :
 ```diff
   syncPolicy:
     automated:
