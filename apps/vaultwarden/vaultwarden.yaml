@@ -58,9 +58,9 @@ spec:
                   - name: SMTP_FROM_NAME
                     value: "JECT Vault"
                   - name: SMTP_SECURITY
-                    value: "force_tls"
+                    value: "starttls"
                   - name: SMTP_PORT
-                    value: "465"
+                    value: "587"
                 envFrom:
                   - secretRef:
                       name: vaultwarden-secret
