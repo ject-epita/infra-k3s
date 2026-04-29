@@ -24,7 +24,8 @@ metadata:
   name: vaultwarden-db
   namespace: vaultwarden
 spec:
-  instances: 2
+  instances: 1
+  enablePDB: false
   storage:
     size: 1Gi
   bootstrap:
