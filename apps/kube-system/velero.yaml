@@ -11,7 +11,7 @@ spec:
     targetRevision: 12.0.1
     helm:
       values: |
-        features: EnableHostPath,EnableCSI
+        features: EnableHostPath
         snapshotsEnabled: false
         upgradeCRDs: true
         credentials:
@@ -19,7 +19,7 @@ spec:
           existingSecret: velero-s3-credentials
         configuration:
           extraArgs:
-            - --features=EnableHostPath,EnableCSI
+            - --features=EnableHostPath
           backupStorageLocation:
             - name: default
               provider: aws
@@ -28,7 +28,7 @@ spec:
                 region: auto
                 s3ForcePathStyle: true
                 s3Url: "https://55284c6b3c405233105a9c4ce7d19370.eu.r2.cloudflarestorage.com"
-          uploaderType: kopia
+          uploaderType: restic
           defaultVolumesToFsBackup: false
         initContainers:
           - name: velero-plugin-for-aws
@@ -40,7 +40,7 @@ spec:
         deployNodeAgent: true
         nodeAgent:
           extraArgs:
-            - --features=EnableHostPath,EnableCSI
+            - --features=EnableHostPath
         schedules:
           daily-backup:
             disabled: false
