@@ -11,7 +11,7 @@ spec:
     targetRevision: 12.0.1
     helm:
       values: |
-        features: EnableHostPath
+        features: EnableHostPath,EnableCSI
         snapshotsEnabled: false
         upgradeCRDs: true
         credentials:
@@ -19,7 +19,7 @@ spec:
           existingSecret: velero-s3-credentials
         configuration:
           extraArgs:
-            - --features=EnableHostPath
+            - --features=EnableHostPath,EnableCSI
           backupStorageLocation:
             - name: default
               provider: aws
@@ -40,7 +40,7 @@ spec:
         deployNodeAgent: true
         nodeAgent:
           extraArgs:
-            - --features=EnableHostPath
+            - --features=EnableHostPath,EnableCSI
         schedules:
           daily-backup:
             disabled: false
