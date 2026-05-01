@@ -11,13 +11,14 @@ spec:
     targetRevision: 12.0.1
     helm:
       values: |
-        features: EnableHostPath
         snapshotsEnabled: false
         upgradeCRDs: true
         credentials:
           useSecret: true
           existingSecret: velero-s3-credentials
         configuration:
+          extraArgs:
+            features: EnableHostPath
           backupStorageLocation:
             - name: default
               provider: aws
