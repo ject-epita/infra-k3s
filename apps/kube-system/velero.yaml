@@ -26,7 +26,7 @@ spec:
                 s3ForcePathStyle: true
                 s3Url: "https://55284c6b3c405233105a9c4ce7d19370.eu.r2.cloudflarestorage.com"
           uploaderType: kopia
-          defaultVolumesToFsBackup: true
+          defaultVolumesToFsBackup: false
         initContainers:
           - name: velero-plugin-for-aws
             image: velero/velero-plugin-for-aws:v1.11.1

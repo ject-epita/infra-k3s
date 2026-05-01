@@ -5,7 +5,7 @@ Ce document décrit la méthode pour tester la restauration d'une base de donné
 ## Prérequis
 Avoir les variables de restauration (`bootstrap.recovery`) prêtes dans le manifest de votre base de données (ex: `vaultwarden-db.yaml`).
 
-::warning:: Si une base de donnée est présentée comme OutOfSync, assurez-vous que le manifest de cette BDD a bien les blocs `Production` décommentés et les blocs `Restore` commentés.
+::warning:: Si une base de donnée est présentée comme OutOfSync après restauration, assurez-vous que le manifest de cette BDD a bien les blocs `Production` décommentés et les blocs `Restore` commentés.
 ---
 
 ## Phase 1 : Préparation et Nettoyage
