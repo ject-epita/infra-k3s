@@ -1,3 +1,4 @@
+version: 0.36.0
 controller_name: sealed-secrets
-controller_namespace: sealed-secrets
+controller_namespace: kube-system
 unsealed_dir: .unsealed
