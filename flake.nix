@@ -64,7 +64,6 @@
           k3s
           kubectx
           stern
-          velero
           python3
           kubeseal
           argocd
