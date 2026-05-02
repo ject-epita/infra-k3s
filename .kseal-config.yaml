@@ -1,0 +1,3 @@
+controller_name: sealed-secrets
+controller_namespace: sealed-secrets
+unsealed_dir: .unsealed

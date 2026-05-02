@@ -1,3 +1,5 @@
 .direnv/
 kubeconfig
 out/
+.unsealed/
+.kseal-keys/
