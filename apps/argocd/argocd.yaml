@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://argoproj.github.io/argo-helm'
+    chart: argo-cd
+    targetRevision: 9.5.10
+    helm:
+      values: |
+        global:
+          domain: "argo.ject.fr"
+        configs:
+          params:
+            server.insecure: true
+          cm:
+            url: "https://argo.ject.fr"
+            webhook.github.secret: $argocd-webhook-secret:webhook-secret
+            dex.config: |
+              connectors:
+                - type: oidc
+                  id: google
+                  name: Google
+                  config:
+                    issuer: https://accounts.google.com
+                    clientID: $argocd-oidc-secret:clientID
+                    clientSecret: $argocd-oidc-secret:clientSecret
+          rbac:
+            policy.default: "role:readonly"
+            policy.csv: |
+              g, dsi@ject.fr, role:admin
+              g, leo.thivillon@ject.fr, role:admin
+              g, bastien.pinaud@ject.fr, role:admin
+              g, raphael.skala@ject.fr, role:admin
+        server:
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            annotations:
+              traefik.ingress.kubernetes.io/router.tls: "true"
+              traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+            extraTls:
+            - hosts:
+              - "argo.ject.fr"
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

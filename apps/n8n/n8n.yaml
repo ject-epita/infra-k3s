@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: n8n
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://bjw-s-labs.github.io/helm-charts'
+    chart: app-template
+    targetRevision: 4.6.2
+    helm:
+      values: |
+        controllers:
+          main:
+            strategy: Recreate
+            containers:
+              main:
+                image:
+                  repository: ghcr.io/ject-epita/n8n-no-license
+                  # L'image utilise un digest sha256 fixe
+                  digest: "sha256:dd5daa14ca6a3b783e8aa73b669db7d9ead01192d625813ab34921f4f16cb669"
+                env:
+                  WEBHOOK_URL: "https://n8n.ject.fr"
+
+        service:
+          main:
+            controller: main
+            ports:
+              http:
+                port: 5678
+
+        ingress:
+          main:
+            enabled: true
+            className: traefik
+            annotations:
+              traefik.ingress.kubernetes.io/router.tls: "true"
+              traefik.ingress.kubernetes.io/router.tls.certresolver: "letsencrypt"
+            hosts:
+              - host: "n8n.ject.fr"
+                paths:
+                  - path: /
+                    pathType: Prefix
+                    service:
+                      identifier: main
+                      port: http
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: n8n
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

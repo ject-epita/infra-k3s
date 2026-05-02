@@ -1,0 +1,56 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: r2-backup-store
+  namespace: vaultwarden
+spec:
+  configuration:
+    destinationPath: s3://cnpg-backups/vw/
+    endpointURL: https://55284c6b3c405233105a9c4ce7d19370.eu.r2.cloudflarestorage.com
+    s3Credentials:
+      accessKeyId:
+        name: cloudflare-r2-creds
+        key: ACCESS_KEY_ID
+      secretAccessKey:
+        name: cloudflare-r2-creds
+        key: SECRET_ACCESS_KEY
+    wal:
+      compression: gzip
+  retentionPolicy: "30d"
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: vaultwarden-db
+  namespace: vaultwarden
+spec:
+  instances: 1
+  enablePDB: false
+  storage:
+    size: 1Gi
+  bootstrap:
+    # ---- Production mode
+    initdb:
+      database: vaultwarden
+      owner: vaultwarden
+    # ---- Restore mode
+    # recovery:
+    #   source: clusterBackup
+    #   database: vaultwarden
+    #   owner: vaultwarden
+    # ---- Production mode :
+    # ---- plugins: au meme niveau que bootstrap: dans le yaml
+  plugins:
+  - name: barman-cloud.cloudnative-pg.io
+    enabled: true
+    isWALArchiver: true
+    parameters:
+      barmanObjectName: r2-backup-store
+  # --- Restore mode
+  # externalClusters:
+  # - name: clusterBackup
+  #   plugin:
+  #     name: barman-cloud.cloudnative-pg.io
+  #     parameters:
+  #       barmanObjectName: r2-backup-store
+  #       serverName: vaultwarden-db

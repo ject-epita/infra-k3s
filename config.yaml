@@ -1,0 +1,35 @@
+# /etc/rancher/k3s/config.yaml
+
+# --- Sécurité & Accès ---
+tls-san:
+- "100.IP.TAILSCALE.v4"
+- "hostname"
+- "hostname.exampletailnet.ts.net"
+
+secrets-encryption: true
+kube-apiserver-arg:
+- "anonymous-auth=false"
+
+# --- Stabilité du Nœud (Protection de l'OS) ---
+kubelet-arg:
+# Tue les pods si RAM dispo < 100Mi ou Disque dispo < 10%
+- "eviction-hard=memory.available<100Mi,nodefs.available<10%"
+# Une fois l'éviction lancée, libère au moins jusqu'à ces seuils
+- "eviction-minimum-reclaim=memory.available=0Mi,nodefs.available=5%"
+
+# --- Configuration Réseau (Dual-Stack IPv4/IPv6) ---
+cluster-cidr: "10.42.0.0/16,fd00:42::/56"
+service-cidr: "10.43.0.0/16,fd00:43::/112"
+flannel-ipv6-masq: true
+
+# --- IPs du Nœud (Hetzner) ---
+node-ip:
+- "<IP_TAILSCALE_V4>"
+- "<IP_TAILSCALE_V6>"
+node-external-ip:
+- "<IP_PUBLIQUE_V4>"
+- "<IP_PUBLIQUE_V6>"
+
+# --- Composants à désactiver ---
+disable:
+- "traefik"
